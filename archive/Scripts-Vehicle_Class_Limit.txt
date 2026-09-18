@@ -1,0 +1,247 @@
+﻿Scripts:Vehicle Class Limit - BF2 Technical Information Wiki
+Scripts:Vehicle Class Limit
+From BF2 Technical Information Wiki
+Jump to navigation
+Jump to search
+Contents
+1
+Introduction
+2
+Prerequisites
+3
+Install
+4
+Code
+4.1
+Download
+4.2
+Readable
+Introduction
+This ModManager script prevents use of certain vehicle classes.
+Whenever a player enters one of the forbidden vehicles a 10 second timer is started if it's not already running.
+When the timer is activated it checks all the players and tries to punish the trespassers. As it's almost impossible to kill a player serverside (the player could be standing near a supply drop, health pack, heli landing pack etc.) the script decreases the health of player and the occupied vehicle, hoping for a fast explosion.
+The timer is deactivated if no players were in the forbidden vehicles.
+Prerequisites
+ModManager
+or
+BF2CC
+Install
+unzip the file (or copy and paste into
+mm_climit.py
+) to
+admin/modules
+in your Battlefield 2 server install.
+if necessary, edit the file and change the forbidden classes (by default the forbidden classes are Armor, Helicopter and Aircraft)
+change your
+modmanager.con
+and include the following line:
+''modmanager.loadModule "mm_climit"''
+Code
+Download
+The source is included below and the current version is also available
+here
+.
+Readable
+# vim: ts=4 sw=4 noexpandtab
+"""Vehicle class limit module.
+===== About =====
+This ModManager script prevents use of certain vehicle classes.
+Whenever a player enters one of the forbidden vehicles a 10 second timer is started if
+it's not already running.
+When the timer is activated it checks all the players and tries to punish the trespassers.
+As it's almost impossible to kill a player serverside (the player could be standing near
+a supply drop, health pack, heli landing pack etc.) the script decreases the health of
+player and the occupied vehicle, hoping for a fast explosion.&#160;;)
+The timer is deactivated if no players were in the forbidden vehicles.
+===== Config =====
+Enter the forbidden classes in the ForbiddenTypes list below
+===== History =====
+v1.0 - 20060119:
+Initial public version
+v0.9 - 20051224:
+Internal release
+Author: graag42atgmaildotcom
+You're free to use and modify this script
+"""
+import bf2
+import host
+import mm_utils
+from bf2.stats.constants import *
+# Set the version of your module here
+__version__ = 1.0
+# Set the required module versions here
+__required_modules__ = {
+'modmanager': 1.0
+}
+# Does this module support reload ( are all its reference closed on shutdown? )
+__supports_reload__ = True
+# Set the description of your module here
+__description__ = "VehicleClassLimit v%s"&#160;% __version__
+#comma separated list of forbidden classes ( defined in bf2.stats.constants )
+ForbiddenTypes = [VEHICLE_TYPE_ARMOR, VEHICLE_TYPE_AVIATOR, VEHICLE_TYPE_HELICOPTER]
+updateTimer = None
+class NoFly( object ):
+def __init__( self, modManager ):
+# ModManager reference
+self.mm = modManager
+# Internal shutdown state
+self.__state = 0
+# Add any static initialisation here.
+# Note: Handler registration should not be done here
+# but instead in the init() method
+def onEnterVehicle( self, player, vehicle, freeSoldier):
+"""Player entered a vehicle - check if the class is allowed and start the timer in not."""
+if 1&#160;!= self.__state:
+return 0
+# Put your actions here
+if self.checkPlayerVehicle( player, vehicle, 0 ):
+self.StartTimer()
+def StartTimer( self ):
+"""Start the timer if the state allows it and the timer isn't already started"""
+if 1&#160;!= self.__state:
+return 0
+if not self.updateTimer:
+#self.mm.info( "Starting timer" )
+#mm_utils.msg_server( "Starting timer" )
+self.updateTimer = bf2.Timer(self.onUpdate, 10, 1)
+self.updateTimer.setRecurring(10)
+else:
+#self.mm.info( "Timer already enabled" )
+#mm_utils.msg_server( "Timer already enabled" )
+pass
+def StopTimer( self ):
+"""Shutdown the timer"""
+if self.updateTimer:
+#self.mm.info( "Stopping timer" )
+#mm_utils.msg_server( "Stopping timer" )
+self.updateTimer.destroy()
+self.updateTimer = None
+else:
+#self.mm.info( "Timer already stopped" )
+#mm_utils.msg_server( "Timer already stopped" )
+pass
+def checkPlayerVehicle( self, player, vehicle, mode ):
+"""mode 0 - player just entered vehicle, 1 - timed check
+if the vehicle class is forbidden:
+mode 0 - notify player via server message
+mode 1 - punish player
+returns True if player is in forbidden vehicle class, False othervise"""
+forbiddenClass = False
+try:
+vehicleType = getVehicleType(vehicle.templateName)
+vehicleDamage = vehicle.getDamage()
+body=player.getDefaultVehicle()
+bodyHealth=body.getDamage()
+#debug
+#if 1 == mode:
+#    self.mm.info( "Player %s (health %d) is in %s (class %d, health %d)"&#160;% ( player.getName(), bodyHealth, vehicle.templateName, vehicleType, vehicleDamage ) )
+#    #mm_utils.msg_server( "Player %s (health %d) is in %s (class %d, health %d)"&#160;% ( player.getName(), bodyHealth, vehicle.templateName, vehicleType, vehicleDamage ) )
+#else:
+#    self.mm.info( "Player %s (health %d) entered %s (class %d, health %d)"&#160;% ( player.getName(), bodyHealth, vehicle.templateName, vehicleType, vehicleDamage ) )
+#    #mm_utils.msg_server( "Player %s (health %d) entered %s (class %d, health %d)"&#160;% ( player.getName(), bodyHealth, vehicle.templateName, vehicleType, vehicleDamage ) )
+if vehicleType in ForbiddenTypes:
+forbiddenClass = True
+if 1 == mode:
+#punish
+mm_utils.msg_server( "Oh noes %s!"&#160;% ( player.getName() ) )
+vehicle.setDamage(0.01)
+body.setDamage(0.01)
+else:
+#notify
+mm_utils.msg_server( "%s entered %s. Somebody set up us the bomb. Get out, QUICK!"&#160;% ( player.getName(), vehicle.templateName ) )
+except:
+forbiddenClass = False
+return forbiddenClass
+def init( self ):
+"""Provides default initialisation."""
+# Register your game handlers and provide any
+# other dynamic initialisation here
+self.updateTimer = None
+if 0 == self.__state:
+# Register your host handlers here
+host.registerHandler( 'EnterVehicle', self.onEnterVehicle, 1 )
+# Update to the running state
+self.__state = 1
+# start the timer: if the module was reset during the game at least one check will be made
+# if no players are in forbidden vehicles the timer will shut down until someone enters one
+self.StartTimer()
+def onUpdate( self, data ):
+"""timed check of all players"""
+if 1&#160;!= self.__state:
+return
+needTimer = False
+for player in bf2.playerManager.getPlayers():
+try:
+vehicle=player.getVehicle();
+if self.checkPlayerVehicle(player, vehicle, 1): needTimer = True
+except:
+try:
+player_name = player.getName()
+except:
+player_name = 'unknown'
+self.mm.error( "Failed to check player '%s'"&#160;% player_name, True )
+#do we still need the timer (at least 1 player in a forbidden class vehicle)?
+if needTimer:
+self.StartTimer()
+else:
+self.StopTimer()
+def shutdown( self ):
+"""Shutdown and stop processing."""
+# Unregister game handlers and do any other
+# other actions to ensure your module no longer affects
+# the game in anyway
+#stop the timer
+self.StopTimer
+# Flag as shutdown as there is currently way to:
+# host.unregisterHandler
+self.__state = 2
+def update( self ):
+"""Process and update.
+Note: This is called VERY often processing in here should
+be kept to an absolute minimum.
+"""
+pass
+def mm_load( modManager ):
+"""Creates and returns your object."""
+return NoFly( modManager )
+Retrieved from "
+https://bf2tech.uturista.pt/index.php?title=Scripts:Vehicle_Class_Limit&oldid=121
+"
+Navigation menu
+Personal tools
+Log in
+Request account
+Namespaces
+Page
+Discussion
+English
+expanded
+collapsed
+Views
+Read
+View source
+View history
+More
+expanded
+collapsed
+Search
+Navigation
+Main page
+Recent changes
+Random page
+Help
+Project Reality
+Forums
+GitHub
+IRC
+Tools
+What links here
+Related changes
+Special pages
+Printable version
+Permanent link
+Page information
+This page was last edited on 22 June 2018, at 15:34.
+Privacy policy
+About BF2 Technical Information Wiki
+Disclaimers

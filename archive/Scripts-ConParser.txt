@@ -1,0 +1,183 @@
+﻿Scripts:ConParser - BF2 Technical Information Wiki
+Scripts:ConParser
+From BF2 Technical Information Wiki
+Jump to navigation
+Jump to search
+Contents
+1
+Introduction
+2
+Features
+3
+Usage
+4
+The Code
+Introduction
+This is a very simple parser for the BF2 Con files. You can use it to create BF-Style configs for your python scripts! I haven't tried it in BF2 yet, but it should work fine&#160;:)
+Info: Variables and Expressions are not supported! This is just for reading and saving informations!
+Features
+Reads Con files and returns it as a python list
+Writes Con files from a python list to file
+Usage
+Include the code and include it to your python script - very simple&#160;:)
+Read files:
+config = readCon('MyConfig.con')
+Write files:
+success = writeCon(config, 'MyConfig.con')
+The Code
+# ----------------------------------------------
+# FIRE'S SIMPLE CON PARSER
+#
+# CONTACT:
+# fire_1@gmx.de
+# www.flmod.com
+#
+# USAGE (READ):
+# config = readCon(file)
+# Returns a list: [{key1: [values1]}, {key2: [values2, values2]}, ...]
+#
+# USAGE (WRITE):
+# success = writeCon(config, file)
+# ----------------------------------------------
+# ----------------------------------------------
+# Imports
+# ----------------------------------------------
+import string
+from bf2 import g_debug
+def readCon(conFile):
+config = []
+rem = False
+# ----------------------------------------------
+# Open the file
+# ----------------------------------------------
+if g_debug:
+print 'Reading CON file...'
+try:
+f = file(conFile, 'r')
+lines = f.readlines()
+f.close()
+except IOError: # Damn..
+if g_debug:
+print 'Error while reading CON file!!'
+return config
+for line in lines:
+# ----------------------------------------------
+# Replace tabs etc.
+# ----------------------------------------------
+line = string.replace(line, '\t', '\x20')
+line = string.strip(line, '\x20\n')
+# ----------------------------------------------
+# Remove comments
+# ----------------------------------------------
+if string.strip(string.lower(line[:4])) == 'rem':
+continue
+elif string.strip(string.lower(line[:9])) == 'beginrem':
+rem = True
+continue
+elif string.strip(string.lower(line[:7])) == 'endrem':
+rem = False
+continue
+else:
+if rem:
+continue
+# ----------------------------------------------
+# Find the end of the key
+# ----------------------------------------------
+pos = string.find(line, '\x20')
+if pos < 0: # Not found&#160;:(
+continue
+# ----------------------------------------------
+# Get the key
+# ----------------------------------------------
+key = line[:pos]
+# ----------------------------------------------
+# Get the values
+# ----------------------------------------------
+values = string.split(line[pos + 1:], '\x20')
+for value in values:
+value = string.strip(value, '\x20')
+config.append({key: values})
+# ----------------------------------------------
+# Return the list
+# ----------------------------------------------
+return config
+# --------------------------------------------------------------------------------------------
+def writeCon(config, conFile):
+# ----------------------------------------------
+# Open the file
+# ----------------------------------------------
+if g_debug:
+print 'Writing CON file...'
+try:
+f = file(conFile, 'w+')
+pass
+except IOError: # Damn..
+return False
+data = 'rem *** Created with FiRe\'s CON parser ***\n\n'
+# ----------------------------------------------
+# Create the Con file
+# ----------------------------------------------
+for conf in config:
+# ----------------------------------------------
+# Add the key
+# ----------------------------------------------
+data += conf.items()[0][0]
+# ----------------------------------------------
+# Add the values
+# ----------------------------------------------
+for key in conf.items()[0][1]:
+data += ' ' + key
+data += '\n'
+# ----------------------------------------------
+# Write the config to file
+# ----------------------------------------------
+try:
+f.write(data)
+f.close()
+except IOError:
+if g_debug:
+print 'Error while writing CON file!!'
+return False
+else:
+return True
+Retrieved from "
+https://bf2tech.uturista.pt/index.php?title=Scripts:ConParser&oldid=123
+"
+Navigation menu
+Personal tools
+Log in
+Request account
+Namespaces
+Page
+Discussion
+English
+expanded
+collapsed
+Views
+Read
+View source
+View history
+More
+expanded
+collapsed
+Search
+Navigation
+Main page
+Recent changes
+Random page
+Help
+Project Reality
+Forums
+GitHub
+IRC
+Tools
+What links here
+Related changes
+Special pages
+Printable version
+Permanent link
+Page information
+This page was last edited on 22 June 2018, at 15:34.
+Privacy policy
+About BF2 Technical Information Wiki
+Disclaimers

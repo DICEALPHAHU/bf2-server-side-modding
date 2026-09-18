@@ -1,0 +1,136 @@
+﻿Scripts:EvalPy - BF2 Technical Information Wiki
+Scripts:EvalPy
+From BF2 Technical Information Wiki
+Jump to navigation
+Jump to search
+Contents
+1
+What It Does
+2
+Installation
+3
+Code
+3.1
+__init__.py
+3.2
+eval.py
+What It Does
+Allows you to test snippets of Python code while the server is running, without having to restart it to load changes from files.
+Installation
+Browse to
+admin/standard_admin
+in your bf2 server directory
+Edit
+__init__.py
+so it looks something like the code snippet below.
+Save the below code to
+admin/standard_admin/eval.py
+.
+Make sure RCON is configured, then run your server. If "
+eval.py loaded
+" comes up in your server console it should work from there.
+This doesn't work from the server console. You'll have to use an actual RCON client to use the command this script creates. The
+remoteconsole.py
+script should work just fine.
+The command is "
+eval [statement]
+". An example would be something like the following:
+rcon> eval for i in dir(bf2.objectManager.getObjectsOfTemplate('c4_explosives')[0]): ctx.write(str(i) + '\n')
+Which then might return:
+__doc__
+getChildren
+getParent
+getPosition
+getRotation
+getTemplateProperty
+hasArmor
+isControlPoint
+isPlayerControlObject
+isValid
+setPosition
+setRotation
+templateName
+token
+Note:
+Be extra careful when using
+ctx.write()
+over RCON. Though I have the script set to catch all exceptions, giving
+ctx.write()
+a non-string will still cause an exception. Failure to take this into account can cause RCON to die completely. Using
+ctx.write(str(variable))
+should keep you safe.
+Code
+__init__.py
+import autobalance
+import tk_punish
+import eval
+autobalance.init()
+tk_punish.init()
+eval.init()
+eval.py
+# script for eval()ing python code over rcon
+# -- by dackz (http://dackz.net/)
+import sys
+import new
+import default
+import bf2
+import host
+import game
+import standard_admin
+from bf2 import g_debug
+def write(self, text): self.write_original(str(text))
+def rcmd_eval(self, ctx, cmd):
+try:
+eval(compile(cmd, '<string>', 'exec'))
+except:
+ctx.write(str(sys.exc_info()[0]).split('.')[-1] + ': ' + str(sys.exc_info()[1]) + '\n')
+def init():
+if g_debug: print 'initialising eval script'
+default.CommandContext.write_original = default.CommandContext.write
+newMethod = new.instancemethod(write, None, default.CommandContext)
+default.CommandContext.write = newMethod
+newMethod = new.instancemethod(rcmd_eval, default.server, default.AdminServer)
+default.AdminServer.rcmd_eval = newMethod
+default.server.rcon_cmds['eval'] = default.AdminServer.rcmd_eval
+host.rcon_invoke('echo "eval.py loaded"')
+Retrieved from "
+https://bf2tech.uturista.pt/index.php?title=Scripts:EvalPy&oldid=124
+"
+Navigation menu
+Personal tools
+Log in
+Request account
+Namespaces
+Page
+Discussion
+English
+expanded
+collapsed
+Views
+Read
+View source
+View history
+More
+expanded
+collapsed
+Search
+Navigation
+Main page
+Recent changes
+Random page
+Help
+Project Reality
+Forums
+GitHub
+IRC
+Tools
+What links here
+Related changes
+Special pages
+Printable version
+Permanent link
+Page information
+This page was last edited on 22 June 2018, at 15:35.
+Privacy policy
+About BF2 Technical Information Wiki
+Disclaimers

@@ -1,0 +1,207 @@
+﻿Scripts:RconMap - BF2 Technical Information Wiki
+Scripts:RconMap
+From BF2 Technical Information Wiki
+Jump to navigation
+Jump to search
+Contents
+1
+Introduction
+2
+Installation
+3
+Update
+4
+The Code
+5
+Updates
+Introduction
+Here's a script that adds an rcon command called 'map'. I'm not really a programmer so some of this can probably made in a better way but I'm just glad I got it working. Wouldn't mind any tips on improvement though =).
+Installation
+1. Place map.py in the
+BF2 Server Directory/admin/standard_admin/
+directory
+2. Add a line in the
+___init___.py
+file in the same directory that says
+import map
+3. Restart server, login through rcon and type 'rcon map' for instructions
+Update
+Version 0.2 doesn't clear the maplist any longer, it will instead search through your current maplist and append the map requested if it's not already in the rotation.
+The Code
+As you might see the script is easily customisable so you can add your own aliases if needed.
+Download link for the script
+# --------------------------------------
+# Battlefield 2 - rcon command "map" 0.2
+# --------------------------------------
+# Version history:
+#
+#    0.2    Made maplist check so that you won't loose your maplist when the map is changed
+#            through the command.
+#
+# Unnamed    First release. Basic map functionality.
+#
+# Written by biomass from Clan BaconMen (http://www.baconmen.net)
+# Thanks to Truppo for the inital inspiration =)
+# Lots of kudos to the people behind the BF2 Python Wiki.
+#
+# This scripts let you change maps through rcon without having to deal
+# with a maplist manually. It also allows you to use shorter names for
+# the different maps and currently if a map isn't in your maplist it
+# will be appended and added to that rotation..
+#
+# HOWTO Install:
+#
+# 1. Place map.py in the <BF2 Server Directory/admin/standard_admin/> directory
+# 2. Add a line in the ___init___.py file in the same directory that says
+#    import map
+# 3. Restart server, login through rcon and type 'rcon map' for instructions
+#
+# That's it =)
+import default
+import new
+import string
+import host
+import re
+def rcmd_map(self, ctx, cmd):
+shortmaps = {
+'dalian': 'dalian_plant',
+'plant': 'dalian_plant',
+'dalian_plant': 'dalian_plant',
+'daqing': 'daqing_oilfields',
+'oilfields': 'daqing_oilfields',
+'daqing_oilfields': 'daqing_oilfields',
+'dragon': 'dragon_valley',
+'valley': 'dragon_valley',
+'dragon_valley': 'dragon_valley',
+'fushe': 'fushe_pass',
+'pass': 'fushe_pass',
+'fushe_pass': 'fushe_pass',
+'gulf': 'gulf_of_oman',
+'oman': 'gulf_of_oman',
+'gulf_of_oman': 'gulf_of_oman',
+'kubra': 'kubra_dam',
+'dam': 'kubra_dam',
+'kubra_dam': 'kubra_dam',
+'mashtuur': 'mashtuur_city',
+'city': 'mashtuur_city',
+'mashtuur_city': 'mashtuur_city',
+'clean': 'operation_clean_sweep',
+'sweep': 'operation_clean_sweep',
+'operation': 'operation_clean_sweep',
+'operation_clean_sweep': 'operation_clean_sweep',
+'sharqi': 'sharqi_peninsula',
+'peninsula': 'sharqi_peninsula',
+'sharqi_peninsula': 'sharqi_peninsula',
+'strike': 'strike_at_karkand',
+'karkand': 'strike_at_karkand',
+'strike_at_karkand': 'strike_at_karkand',
+'songhua': 'songhua_stalemate',
+'stalemate': 'songhua_stalemate',
+'songhua_stalemate': 'songhua_stalemate',
+'zatar': 'zatar_wetlands',
+'wetlands': 'zatar_wetlands',
+'zatar_wetlands': 'zatar_wetlands'
+}
+maperror = 0
+mapinmaplist = 0
+if cmd&#160;!= "":
+mapvars = cmd.split()
+if len(mapvars) == 1:
+if mapvars[0] == 'list':
+maperror = 2
+for m in shortmaps:
+ctx.write(m + ', ')
+elif shortmaps.has_key(mapvars[0]):
+ctx.write('Please specify playersize...\n')
+maperror = 1
+else:
+ctx.write('Unknown map...\n')
+maperror = 1
+if len(mapvars) >= 2:
+if not shortmaps.has_key(mapvars[0]):
+maperror = 1
+ctx.write('Unknown map...\n')
+try:
+if int(mapvars[1]) not in [16,32,64]:
+maperror = 1
+ctx.write('Unknown playersize...\n')
+except ValueError:
+ctx.write('Unknown playersize...\n')
+maperror = 1
+else:
+maperror = 1
+if int(maperror) == 1:
+ctx.write('\n')
+ctx.write('map: USAGE: rcon map (partial mapword or complete mapname) (playersize 16/32/64)\n')
+ctx.write('map: USAGE: rcon map list  - prints a list of valid aliases/names\n')
+elif int(maperror) == 2:
+ctx.write('end of maplist\n')
+else:
+maplist = serverConfig("maplist.list")
+pattern = re.compile('^\d+:\s\"(.*?)\"\sgpm_cq\s(\d{2})$', re.MULTILINE)
+result = []
+for maplist in pattern.findall(maplist):
+result.append((maplist[0].lower(),maplist[1]))
+for mapavailable in result:
+if str(mapavailable[0]) == shortmaps[mapvars[0]]:
+if int(mapavailable[1]) == int(mapvars[1]):
+mapinmaplist = 1
+if mapinmaplist&#160;!= 0:
+host.rcon_invoke("admin.nextLevel " + str(result.index((shortmaps[mapvars[0]],mapvars[1]))))
+host.rcon_invoke("admin.runNextLevel")
+ctx.write('Map in maplist - Changing map to ' + shortmaps[mapvars[0]] + ' - ' + mapvars[1] + ' players\n')
+else:
+ctx.write('Changing map to ' + shortmaps[mapvars[0]] + ' - ' + mapvars[1] + ' players\n')
+host.rcon_invoke('mapList.append ' + shortmaps[mapvars[0]] + ' gpm_cq ' + mapvars[1])
+host.rcon_invoke("game.sayAll \"Changing map to " + shortmaps[mapvars[0]] + " - " + mapvars[1] + " players\"")
+host.rcon_invoke("admin.nextLevel " + str(len(result)))
+host.rcon_invoke("admin.runNextLevel")
+newMethod = new.instancemethod(rcmd_map, default.server, default.AdminServer)
+default.AdminServer.rcmd_map = newMethod
+default.server.rcon_cmds['map'] = default.AdminServer.rcmd_map
+def serverConfig(variableName):
+return host.rcon_invoke(variableName).strip()
+Updates
+2005-Jul-30: Version 0.2 posted
+earlier date: First version posted
+Retrieved from "
+https://bf2tech.uturista.pt/index.php?title=Scripts:RconMap&oldid=108
+"
+Navigation menu
+Personal tools
+Log in
+Request account
+Namespaces
+Page
+Discussion
+English
+expanded
+collapsed
+Views
+Read
+View source
+View history
+More
+expanded
+collapsed
+Search
+Navigation
+Main page
+Recent changes
+Random page
+Help
+Project Reality
+Forums
+GitHub
+IRC
+Tools
+What links here
+Related changes
+Special pages
+Printable version
+Permanent link
+Page information
+This page was last edited on 22 June 2018, at 15:27.
+Privacy policy
+About BF2 Technical Information Wiki
+Disclaimers

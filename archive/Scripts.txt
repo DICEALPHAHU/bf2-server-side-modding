@@ -1,0 +1,226 @@
+﻿Scripts - BF2 Technical Information Wiki
+Scripts
+From BF2 Technical Information Wiki
+Jump to navigation
+Jump to search
+Please add your scripts to this list for others to see, use and get inspiration from:
+Contents
+1
+Access
+2
+Administration
+3
+Gameplay
+4
+Miscellaneous
+5
+Modified Default Scripts
+6
+Restart Server Scripts
+Access
+Always Keep Slots Free for Special Players
+(by monsterdog)
+When server reaches a certain number of players online, kick new players immediately unless they appear in an approved list.
+A Better Reserved Slots System
+(by Solarius)
+Uses a dynamic list of players (stored in a text file) to give certain players priority-- kicking people not on the list to make room (and kicking commanders/squad leaders as a last option).
+CountryFilter
+(by Guwashi from
+d3.jpn.org
+)
+Provides access control (allow/deny) based on player's country name.
+Kick Players Who Are Idle for a Configurable Time
+(by Xlr8or from
+www.xlr8or.com
+)
+Checks if players are actually playing or not. Warns once and then kicks them to free the slot.
+Kicking for High Ping
+(by Panic and Kybber from
+Battlefield.no
+)
+Kicks high-pingers, based on a set of rules.
+Administration
+Administrative Support System
+(by Butter from
+DontCamp.com
+)
+Provides an in-game chat based admin system similar to Kevin Lockitt's Battlefield Server Manager.
+Automatic Announcements
+(by Woody)
+Makes automatic periodic announcements to all players.
+Automatically Shutdown Server at Maintenance Time
+(by Greeze)
+A quick-and-dirty auto-shutdown script. Warns users at intervals before shutting down, and provides an option to either pause the game or quit the server.
+Automatically Kick Players for Using Banned Words
+(by Woody)
+Automatically kicks players who use "inappropriate" language in chat messages, or in their player names.
+Easily Change Map Through RCon
+(by biomass from
+Clan BaconMen
+)
+Rcon 'map' command to easily change maps on a server.
+Execute Commands from File
+(by truppo from
+Clan BaconMen
+)
+Rcon 'cfg' command to execute commands from file.
+In-Game Administration Manager
+(by Danni)
+Provides the ability to flag users as administrators with varying levels of permissions. Help wanted!
+TXT File-Based Automatic Announcements
+(by daveml)
+Makes automatic periodic announcements to all players listed in a text file. Thanks to Woody for planting the seed&#160;:)
+Gameplay
+Anti-Base Rape
+(by SHAnders)
+Punishes player attacking a team within a specified radius of their uncaptuable controlpoint.
+The script is also available in Modmanager
+format
+for bf2cc users. (by graag42)
+Automatic Map Changer/Randomizer
+(by dst from
+DontCamp.com
+)
+Automatically resizes maps based on players connected and randomizes the map cycle.
+Autoteam by Ticket Ratio
+(by dst from
+DontCamp.com
+)
+Automatically adjusts sv.teamRatioPercent in inverse proportion to the ticket ratio.
+c4punish
+(by BlackYoda from
+vikingmind.com
+)
+CTF game play mode add on to punish players who use C4 or Claymore mines near the main base flag. This script can be integrated with any CTF style Battlefield II gameplay mode, and is available now for Desert Conflict.
+Kick Squadless Players
+(by Sarc)
+Kicks players that are not commanding or in a squad. Performs the check on player spawn.
+ModManager Automatic Map Sizer
+(by
+GloryHoundz.com
+)
+This [ModManager ModManager] script will maintain the normal map rotation, but size the next map in rotation based on the number of players on the server.
+OfftimePy
+(by [User
+Dackz Dackz])
+Gives the ability to have seperate settings for when there are and aren't enough people to start a game.
+Prevent Users from Punishing Your Clan Members
+(by underplay)
+Modifies the default tk punish script and prevents any members of your squad from being punished.
+Remove Flags on 64 Player Maps Based on Player Count
+(by FBX)
+This script will remove some of the flags on all of the 64 player maps that have planes based on the number of players currently in the server. For example, if 20 people are playing, 3 flags may be removed depending on the map. If 40 people are playing maybe only 1 of the flags are removed. If 64 people are playing, none of the flags are removed. Please edit the script before using to accomodate your server. If you are running a map as the 32 or 16 player version and not the 64 player, you'll want to be sure to disable it in the script. Overwrites the old rules for conquest, so make a back-up first. Installing doesnt affect play outside your server and is server-side only.
+Threat and Worth
+(by SHAnders)
+Giving players bonus score based uppon a calculation of killer/vehicle worth vs victim/vehicle worth, overall threat rating and each players survival rating.
+Weapon Restriction and Commander Detection (BF2 Oldschool infantry script)
+(by MisiekBest)
+This infantry script can: restrict some weapons on server (medics only, medics only with no unlocks, knife-pistol-shockpaddles only, no unlocks, no c4, no claymore, no mgs, no tow), kick or kill player for using restricted weapons, detect and kick commander (or just throw info). You can also manage script via rcon.
+Vehicle Class Limit
+(by graag42)
+Prevents use of certain vehicle classes.
+Aircraft Only
+(by polarity from
+Coop Flight School
+)
+Based on the above Vehicle Class Limit, this script is used to 'persuade' all the players on the Coop Flight School server to play in aircraft only. Players who exit an aircraft they are spawned into are warned that they will start to take damage if they don't return to an aircraft in 25s. If they spawned outside an aircraft they are also warned to enter an aircraft. Prevents attempts to counter the damage by increasing damage rate if healing has occured.
+Miscellaneous
+ConParser
+(by FiRe- from
+flmod.com
+)
+A simple script to read and write BF-style Con-files.
+EvalPy
+(by Dackz)
+Allows evaluation of python statements over RCON in the context of the RCON script.
+EventsPy
+(by Dackz)
+Prints connection, disconnection, and chat events to the server console.
+Posting URL Lib
+(by MPUKBoffbowsh from
+Multiplay UK
+)
+Gives ability to HTTP POST a number of fields to a web page. Currently receives a garbled response, need to fix that.
+Reads Clanmembers from a File
+(by Nexus2k from
+bs-dc.com
+)
+Scriptpart for reading Clanmembers out of a members.cfg file
+UDP-Based Advert System
+(by Panic and Kybber from
+Battlefield.no
+)
+An idea of how one could utilize sockets to create an UDP based advert system.
+Player Position Display
+(by polarity from
+Coop Flight School
+)
+For use as a tool when server side modding that can help with the positioning of vehicles/flags/spawn points. Displays the player's position and the direction that they're facing, in the same format as is used in the GamePlayObjects.con file.
+Modified Default Scripts
+Enhanced rotate_demo
+(by daveml)
+Additional logging for troubleshooting FTP, includes changes by dackz.
+Enhanced TK Script
+(by FBX, McAfee)
+powerful TK script designed to replace the original (however keep a back up of the original anyways). Allows limiting of punishing from "static" weapons, such as AT mines, artillery, and claymores, and removal of punishing from heat seeking weapons, which are difficult to TK with intentially. Additionally, players can earn off punishings on their record by getting kills, or can instead use McAfee's system which only allows you to punish and allow a certain number of times you can be punished based on the number of kills you have. The amount of punishing on your record you have recieved resets at the end of a round. Script is by default silent. Installing doesnt affect online play outside your server and is server-side only.
+The script is also available in Modmanager
+format
+for bf2cc users. (by graag42)
+Modified Admin Script ('default.py')
+(by Panic and Kybber from
+Battlefield.no
+)
+Enables logging to file and udp, and loads a settings file from the directory where the maplist is loaded from.
+Modified Autobalance Script
+(by Nexus2k from
+bs-dc.com
+)
+Prevents Clanmembers/Squadleaders/Commanders from Autobalance
+Modified Demo Rotator
+(by Dackz)
+Fixes moving to and from the same place causing problems, and chmods all demo files 0644 so they are web-readable.
+TK punish drop-in replacement
+(by Nadar, Kybber and Panic from
+Battlefield.no
+)
+Announces the number of PTKs and FTKs a person has to prevent PTK-abuse. Does not modify the functionality of the original script, so it should be accepted as Ranked-server compatible.
+Restart Server Scripts
+Restart Scripts
+Scripts To restart Your Server after Crash. --DarkPepe 18:38, 3 June 2006 (MDT)
+Retrieved from "
+https://bf2tech.uturista.pt/index.php?title=Scripts&oldid=98
+"
+Navigation menu
+Personal tools
+Log in
+Request account
+Namespaces
+Page
+Discussion
+Variants
+Views
+Read
+View source
+View history
+More
+Search
+Navigation
+Main page
+Recent changes
+Random page
+Help
+Project Reality
+Forums
+GitHub
+IRC
+Tools
+What links here
+Related changes
+Special pages
+Printable version
+Permanent link
+Page information
+This page was last edited on 22 June 2018, at 15:22.
+Privacy policy
+About BF2 Technical Information Wiki
+Disclaimers

@@ -1,0 +1,209 @@
+﻿Console Script Grammar - BF2 Technical Information Wiki
+Console Script Grammar
+From BF2 Technical Information Wiki
+Jump to navigation
+Jump to search
+Con files are the core of how Battlefield 2 (and 1942 before it) configures its weapons, maps, objects, players and other game assets. These files can be run by the engine or from within the in-game console. The in-game console uses the exact same syntax with the notable difference that multi-line commands like
+beginRem
+do not work. With Battlefield 2, the console grammar has extended into a rudimentry scripting language, with loops and full conditionals.  Battlefield 1942 had only very rudimentry conditionals.
+Contents
+1
+Comments
+2
+Statements
+3
+Variables
+3.1
+Mutable Variables
+3.2
+Immutable Variables
+3.3
+const vs. var and assignments
+4
+Conditionals
+4.1
+Expressions
+5
+Return
+6
+include and run
+7
+An Example
+Comments
+There exist two classes of comments, block:
+beginRem
+this text is ignored
+endRem
+and line:
+rem this text is ignored
+Statements
+Statements are a command followed by a number of optionally "quoted", whitespace-seperated arguments. The number of arguments may be variable or strictly limited by the command in use.  The available commands is beyond the scope of this page, but a good portion of them are included with the editor. A full list is available by running GNU
+strings
+against your bf2.exe&#160;;)
+Variables
+Variables must be predefined, and have a strict naming system.  All mutable variables must begin with
+v_
+whereas all immutable variables or
+constants
+must begin with
+c_
+. It's a simple form of
+wikipedia:Hungarian Notation
+.
+Mutable Variables
+The code:
+var v_dongs = test
+Defines a new variable called
+dongs
+or
+v_dongs
+depending on your point of view with the value "test".  When defining a variable you can omit the default value however:
+var v_dongs
+is a value construct for example.
+Immutable Variables
+const c_butts = test
+Defines a constant called, again,
+butts
+or
+c_butts
+with the value "test".  Obviously, this variable cannot be changed.
+const
+vs.
+var
+and assignments
+Assigning to a variable is as simple as appending
+-> v_varname
+to any command.  However, many commands do not return a value.  The ones that do generally return either a boolean value (
+0
+or
+1
+) or a simple string.
+Clearly, trying to assign to a
+const
+variable is an error and will not work.
+Conditionals
+Conditionals include the standard
+if ... endIf
+,
+if ... elseIf ... endIf
+and
+while ... endWhile
+constructs.  These evaluate an
+expression
+.
+Expressions
+The grammar of an expression is roughly:
+<variable> <comparator> <value>
+Where
+variable
+is any variable name beginning with
+v_
+or
+c_
+.
+comparator
+is one of
+==
+,
+!=
+,
+>
+,
+>=
+,
+<
+or
+<=
+or their textual equivalents:
+lessOrEqualThan
+,
+lessThan
+,
+greaterOrEqualThan
+,
+greaterThan
+,
+notEquals
+,
+equals
+.
+value
+is any literal string, quoted if neccessary.
+Return
+You may cease interpretation of the current .con file by using the command
+return
+. This resumes interpretation from the calling file.  It is an error to use this unless the file was called with...
+include
+and
+run
+include
+and
+run
+do similar things and may in fact be identical.  These trigger the interpretation of another .con file. They also have the ability to set
+arguments
+, which are a special type of mutable variable. For example:
+run test.con 1 2 3
+Runs test.con.  In test.con, the variables
+v_arg1
+,
+v_arg2
+and
+v_arg3
+are set to
+1
+,
+2
+and
+3
+respectively.  Typically this is used along with a conditional to do something for the editor mode, or to do something different for single player mode (a common use in BF1942, where this method also existed).
+An Example
+var v_tst
+fileManager.fileExists movies/menu.bik -> v_tst
+if v_tst == 0
+fileManager.copyFile ../../mods/bf2/movies/menu.bik movies/menu.bik
+fileManager.copyFile ../../mods/bf2/movies/menu_loggedin.bik movies/menu_loggedin.bik
+endIf
+This example checks if movies/menu.bik exists, and if it doesn't copies two files from the
+bf2
+mod to the current mod.
+Retrieved from "
+https://bf2tech.uturista.pt/index.php?title=Console_Script_Grammar&oldid=44
+"
+Navigation menu
+Personal tools
+Log in
+Request account
+Namespaces
+Page
+Discussion
+English
+expanded
+collapsed
+Views
+Read
+View source
+View history
+More
+expanded
+collapsed
+Search
+Navigation
+Main page
+Recent changes
+Random page
+Help
+Project Reality
+Forums
+GitHub
+IRC
+Tools
+What links here
+Related changes
+Special pages
+Printable version
+Permanent link
+Page information
+This page was last edited on 26 April 2018, at 21:30.
+Privacy policy
+About BF2 Technical Information Wiki
+Disclaimers

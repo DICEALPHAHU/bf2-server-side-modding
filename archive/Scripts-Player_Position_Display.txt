@@ -1,0 +1,144 @@
+﻿Scripts:Player Position Display - BF2 Technical Information Wiki
+Scripts:Player Position Display
+From BF2 Technical Information Wiki
+Jump to navigation
+Jump to search
+Contents
+1
+Purpose
+2
+Installation
+3
+Credits
+Purpose
+When run on a testing server this script makes it easy to reposition items around when you're doing server-side mods, as it saves you from opening the BF2 Editor, or trying to get debug to work to get positions.
+This has only ever been used to find positions in a local dedicated server, and will probably cause all kinds of problems if run on a public server, as it probably won't handle map changes/more than 1 player.
+The positions have 1.0 subtracted from the y axis (vectors are right/up/forward format), as for the player object it is above ground level. Without this flags, vehicles and spawn points will all be above the ground.
+Installation
+Requires Modmanager.
+Save the following to a file named mm_ppos.py in the [bf2server]/admin/modules/ folder, and add a line to enable it in modmanager.con (usually found in [bf2server]/mods/bf2/settings/).
+"""Player Position Display module.
+===== About =====
+This ModManager script displays your current player object's position (less 1.0 in the z axis), and the direction you're facing.
+Run it in a solo testing server to find map positions that may be used for server side modding.
+Running it on a public populated server will display the positions of all players, and make it difficult to find your own location
+===== History =====
+v1.0 - 20080503:
+Initial public version
+By polarity.
+Available from bf2tech.org or flightschool.polar-lights.org.uk
+You're free to use and modify this script
+"""
+import bf2
+import host
+import mm_utils
+from bf2.stats.constants import *
+# Set the version of your module here
+__version__ = 1.0
+# Set the required module versions here
+__required_modules__ = {
+'modmanager': 1.0
+}
+# Does this module support reload ( are all its reference closed on shutdown? )
+__supports_reload__ = True
+# Set the description of your module here
+__description__ = "PlayerPositionDisplay v%s"&#160;% __version__
+updateTimer = None
+class PlayerPos( object ):
+def __init__( self, modManager ):
+self.mm = modManager
+self.__state = 0
+def onPlayerSpawn(self, player, body ):
+if 1&#160;!= self.__state:
+return 0
+if (not player.isAIPlayer()):
+updateTimer = bf2.Timer( self.onUpdate, 1, 1 )
+updateTimer.setRecurring(2)
+def StopTimer( self ):
+if 1&#160;!= self.__state:
+return 0
+if updateTimer:
+updateTimer.destroy()
+updateTimer = None
+def onUpdate( self, data ):
+if 1&#160;!= self.__state:
+return 0
+#mm_utils.msg_server( "timer event called" )
+for player in bf2.playerManager.getPlayers():
+if not player.isAIPlayer():
+vehicle = player.getVehicle()
+try:
+playerPos = vehicle.getPosition()
+playerRot = vehicle.getRotation()
+mm_utils.msg_player( player.index, "You are at:&#160;%.3f /&#160;%.3f /&#160;%.3f.  Looking&#160;%.1f degrees from North."&#160;% (playerPos[0], playerPos[1] - 1, playerPos[2], playerRot[0] ) )
+#mm_utils.msg_player( player.index, "--------------------------" )
+except:
+mm_utils.msg_player( player.index, "failed to find soldier object's position" )
+def init( self ):
+if 0 == self.__state:
+host.registerHandler( 'PlayerSpawn', self.onPlayerSpawn, 1 )
+# Update to the running state
+self.__state = 1
+updateTimer = None
+def shutdown( self ):
+"""Shutdown and stop processing."""
+# Unregister game handlers and do any other
+# other actions to ensure your module no longer affects
+# the game in anyway
+#stop the timer
+self.StopTimer()
+# Flag as shutdown as there is currently way to:
+# host.unregisterHandler
+self.__state = 2
+def update( self ):
+"""Process and update.
+Note: This is called VERY often processing in here should
+be kept to an absolute minimum.
+"""
+pass
+def mm_load( modManager ):
+"""Creates and returns your object."""
+return PlayerPos( modManager )
+Credits
+The writers of the other scripts found here on bf2tech.org. This uses some of them as a foundation.
+Retrieved from "
+https://bf2tech.uturista.pt/index.php?title=Scripts:Player_Position_Display&oldid=129
+"
+Navigation menu
+Personal tools
+Log in
+Request account
+Namespaces
+Page
+Discussion
+English
+expanded
+collapsed
+Views
+Read
+View source
+View history
+More
+expanded
+collapsed
+Search
+Navigation
+Main page
+Recent changes
+Random page
+Help
+Project Reality
+Forums
+GitHub
+IRC
+Tools
+What links here
+Related changes
+Special pages
+Printable version
+Permanent link
+Page information
+This page was last edited on 22 June 2018, at 15:36.
+Privacy policy
+About BF2 Technical Information Wiki
+Disclaimers

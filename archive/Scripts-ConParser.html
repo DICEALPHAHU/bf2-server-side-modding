@@ -1,0 +1,412 @@
+﻿<!DOCTYPE html>
+<html class="client-nojs" lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>Scripts:ConParser - BF2 Technical Information Wiki</title>
+<script>document.documentElement.className="client-js";RLCONF={"wgBreakFrames":false,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgRequestId":"943dd12b98fe715a88970b25","wgCSPNonce":false,"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Scripts:ConParser","wgTitle":"Scripts:ConParser","wgCurRevisionId":123,"wgRevisionId":123,"wgArticleId":73,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgRelevantPageName":"Scripts:ConParser","wgRelevantArticleId":73,"wgIsProbablyEditable":false,"wgRelevantPageIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[]};RLSTATE={"site.styles":"ready","user.styles":"ready","user":"ready",
+"user.options":"loading","skins.vector.styles.legacy":"ready"};RLPAGEMODULES=["site","mediawiki.page.ready","mediawiki.toc","skins.vector.legacy.js"];</script>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.loader.implement("user.options@1i9g4",function($,jQuery,require,module){mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});});});</script>
+<link rel="stylesheet" href="/load.php?lang=en&amp;modules=skins.vector.styles.legacy&amp;only=styles&amp;skin=vector"/>
+<script async="" src="/load.php?lang=en&amp;modules=startup&amp;only=scripts&amp;raw=1&amp;skin=vector"></script>
+<meta name="generator" content="MediaWiki 1.38.2"/>
+<meta name="format-detection" content="telephone=no"/>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="BF2 Technical Information Wiki (en)"/>
+<link rel="EditURI" type="application/rsd+xml" href="https://bf2tech.uturista.pt/api.php?action=rsd"/>
+<link rel="alternate" type="application/atom+xml" title="BF2 Technical Information Wiki Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom"/>
+</head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-Scripts_ConParser rootpage-Scripts_ConParser skin-vector action-view skin-vector-legacy"><div id="mw-page-base" class="noprint"></div>
+<div id="mw-head-base" class="noprint"></div>
+<div id="content" class="mw-body" role="main">
+	<a id="top"></a>
+	<div id="siteNotice"></div>
+	<div class="mw-indicators">
+	</div>
+	<h1 id="firstHeading" class="firstHeading mw-first-heading">Scripts:ConParser</h1>
+	<div id="bodyContent" class="vector-body">
+		<div id="siteSub" class="noprint">From BF2 Technical Information Wiki</div>
+		<div id="contentSub"></div>
+		<div id="contentSub2"></div>
+		
+		<div id="jump-to-nav"></div>
+		<a class="mw-jump-link" href="#mw-head">Jump to navigation</a>
+		<a class="mw-jump-link" href="#searchInput">Jump to search</a>
+		<div id="mw-content-text" class="mw-body-content mw-content-ltr" lang="en" dir="ltr"><div class="mw-parser-output"><div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none" /><div class="toctitle" lang="en" dir="ltr"><h2 id="mw-toc-heading">Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Features"><span class="tocnumber">2</span> <span class="toctext">Features</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="#Usage"><span class="tocnumber">3</span> <span class="toctext">Usage</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="#The_Code"><span class="tocnumber">4</span> <span class="toctext">The Code</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Introduction">Introduction</span></h2>
+<p>This is a very simple parser for the BF2 Con files. You can use it to create BF-Style configs for your python scripts! I haven't tried it in BF2 yet, but it should work fine&#160;:)
+</p><p>Info: Variables and Expressions are not supported! This is just for reading and saving informations!
+</p>
+<h2><span class="mw-headline" id="Features">Features</span></h2>
+<ul><li>Reads Con files and returns it as a python list</li>
+<li>Writes Con files from a python list to file</li></ul>
+<h2><span class="mw-headline" id="Usage">Usage</span></h2>
+<p>Include the code and include it to your python script - very simple&#160;:)
+</p><p>Read files:
+</p>
+<pre>config = readCon('MyConfig.con') </pre>
+<p>Write files:
+</p>
+<pre>success = writeCon(config, 'MyConfig.con')</pre>
+<h2><span class="mw-headline" id="The_Code">The Code</span></h2>
+<pre># ----------------------------------------------
+# FIRE'S SIMPLE CON PARSER
+#
+# CONTACT:
+# fire_1@gmx.de
+# www.flmod.com
+#
+# USAGE (READ):
+# config = readCon(file)
+# Returns a list: [{key1: [values1]}, {key2: [values2, values2]}, ...]
+#
+# USAGE (WRITE):
+# success = writeCon(config, file)
+# ----------------------------------------------
+
+# ----------------------------------------------
+# Imports
+# ----------------------------------------------
+import string
+from bf2 import g_debug
+
+
+def readCon(conFile):
+    config = []
+    rem = False
+   
+    # ----------------------------------------------
+    # Open the file
+    # ----------------------------------------------
+    if g_debug:
+        print 'Reading CON file...'
+   
+    try:
+        f = file(conFile, 'r')
+        lines = f.readlines()
+        f.close()
+    except IOError: # Damn..
+        if g_debug:
+            print 'Error while reading CON file!!'
+       
+        return config
+
+   
+    for line in lines:
+        # ----------------------------------------------
+        # Replace tabs etc.
+        # ----------------------------------------------
+        line = string.replace(line, '\t', '\x20')
+        line = string.strip(line, '\x20\n')
+
+        # ----------------------------------------------
+        # Remove comments
+        # ----------------------------------------------
+        if string.strip(string.lower(line[:4])) == 'rem':
+            continue
+        elif string.strip(string.lower(line[:9])) == 'beginrem':
+            rem = True
+            continue
+        elif string.strip(string.lower(line[:7])) == 'endrem':
+            rem = False
+            continue
+        else:
+            if rem:
+                continue
+
+        # ----------------------------------------------
+        # Find the end of the key
+        # ----------------------------------------------
+        pos = string.find(line, '\x20')
+        if pos &lt; 0: # Not found&#160;:(
+            continue
+
+        # ----------------------------------------------
+        # Get the key
+        # ----------------------------------------------
+        key = line[:pos]
+
+        # ----------------------------------------------
+        # Get the values
+        # ----------------------------------------------
+        values = string.split(line[pos + 1:], '\x20')
+        for value in values:
+            value = string.strip(value, '\x20')
+
+        config.append({key: values})
+
+
+    # ----------------------------------------------
+    # Return the list
+    # ----------------------------------------------
+    return config
+
+
+# --------------------------------------------------------------------------------------------
+
+
+def writeCon(config, conFile):
+    # ----------------------------------------------
+    # Open the file
+    # ----------------------------------------------
+    if g_debug:
+        print 'Writing CON file...'
+   
+    try:
+        f = file(conFile, 'w+')
+        pass
+    except IOError: # Damn..
+        return False
+   
+    data = 'rem *** Created with FiRe\'s CON parser ***\n\n'
+
+
+    # ----------------------------------------------
+    # Create the Con file
+    # ----------------------------------------------
+    for conf in config:
+        # ----------------------------------------------
+        # Add the key
+        # ----------------------------------------------
+        data += conf.items()[0][0]
+       
+        # ----------------------------------------------
+        # Add the values
+        # ----------------------------------------------
+        for key in conf.items()[0][1]:
+            data += ' ' + key
+        data += '\n'
+
+
+    # ----------------------------------------------
+    # Write the config to file
+    # ----------------------------------------------
+    try:
+        f.write(data)
+        f.close()
+    except IOError:
+        if g_debug:
+            print 'Error while writing CON file!!'
+        return False
+    else:
+        return True
+</pre>
+<!-- 
+NewPP limit report
+Cached time: 20220803175114
+Cache expiry: 86400
+Reduced expiry: false
+Complications: []
+CPU time usage: 0.007 seconds
+Real time usage: 0.039 seconds
+Preprocessor visited node count: 25/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/100
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 4058/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key wiki_bf2:pcache:idhash:73-0!canonical and timestamp 20220803175114 and revision id 123. Serialized with JSON.
+ -->
+</div>
+<div class="printfooter">Retrieved from "<a dir="ltr" href="https://bf2tech.uturista.pt/index.php?title=Scripts:ConParser&amp;oldid=123">https://bf2tech.uturista.pt/index.php?title=Scripts:ConParser&amp;oldid=123</a>"</div></div>
+		<div id="catlinks" class="catlinks catlinks-allhidden" data-mw="interface"></div>
+	</div>
+</div>
+
+<div id="mw-navigation">
+	<h2>Navigation menu</h2>
+	<div id="mw-head">
+		
+<nav id="p-personal" class="mw-portlet mw-portlet-personal vector-user-menu-legacy vector-menu" aria-labelledby="p-personal-label" role="navigation" 
+	 >
+	<label id="p-personal-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Personal tools</span>
+	</label>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="pt-login" class="mw-list-item"><a href="/index.php?title=Special:UserLogin&amp;returnto=Scripts%3AConParser" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o"><span>Log in</span></a></li><li id="pt-createaccount" class="mw-list-item"><a href="/index.php/Special:RequestAccount" title="You are encouraged to create an account and log in; however, it is not mandatory"><span>Request account</span></a></li></ul>
+		
+	</div>
+</nav>
+
+		<div id="left-navigation">
+			
+<nav id="p-namespaces" class="mw-portlet mw-portlet-namespaces vector-menu vector-menu-tabs" aria-labelledby="p-namespaces-label" role="navigation" 
+	 >
+	<label id="p-namespaces-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Namespaces</span>
+	</label>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="ca-nstab-main" class="selected mw-list-item"><a href="/index.php/Scripts:ConParser" title="View the content page [c]" accesskey="c"><span>Page</span></a></li><li id="ca-talk" class="new mw-list-item"><a href="/index.php?title=Talk:Scripts:ConParser&amp;action=edit&amp;redlink=1" rel="discussion" title="Discussion about the content page (page does not exist) [t]" accesskey="t"><span>Discussion</span></a></li></ul>
+		
+	</div>
+</nav>
+
+			
+<nav id="p-variants" class="mw-portlet mw-portlet-variants emptyPortlet vector-menu-dropdown-noicon vector-menu vector-menu-dropdown" aria-labelledby="p-variants-label" role="navigation" 
+	 >
+	<input type="checkbox"
+		id="p-variants-checkbox"
+		role="button"
+		aria-haspopup="true"
+		data-event-name="ui.dropdown-p-variants"
+		class="vector-menu-checkbox" aria-labelledby="p-variants-label" />
+	<label id="p-variants-label" aria-label="Change language variant" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">English</span>
+			<span class="vector-menu-checkbox-expanded">expanded</span>
+			<span class="vector-menu-checkbox-collapsed">collapsed</span>
+	</label>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"></ul>
+		
+	</div>
+</nav>
+
+		</div>
+		<div id="right-navigation">
+			
+<nav id="p-views" class="mw-portlet mw-portlet-views vector-menu vector-menu-tabs" aria-labelledby="p-views-label" role="navigation" 
+	 >
+	<label id="p-views-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Views</span>
+	</label>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="ca-view" class="selected mw-list-item"><a href="/index.php/Scripts:ConParser"><span>Read</span></a></li><li id="ca-viewsource" class="mw-list-item"><a href="/index.php?title=Scripts:ConParser&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e"><span>View source</span></a></li><li id="ca-history" class="mw-list-item"><a href="/index.php?title=Scripts:ConParser&amp;action=history" title="Past revisions of this page [h]" accesskey="h"><span>View history</span></a></li></ul>
+		
+	</div>
+</nav>
+
+			
+<nav id="p-cactions" class="mw-portlet mw-portlet-cactions emptyPortlet vector-menu-dropdown-noicon vector-menu vector-menu-dropdown" aria-labelledby="p-cactions-label" role="navigation"  title="More options"
+	 >
+	<input type="checkbox"
+		id="p-cactions-checkbox"
+		role="button"
+		aria-haspopup="true"
+		data-event-name="ui.dropdown-p-cactions"
+		class="vector-menu-checkbox" aria-labelledby="p-cactions-label" />
+	<label id="p-cactions-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">More</span>
+			<span class="vector-menu-checkbox-expanded">expanded</span>
+			<span class="vector-menu-checkbox-collapsed">collapsed</span>
+	</label>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"></ul>
+		
+	</div>
+</nav>
+
+			
+<div id="p-search" role="search" class="vector-search-box-vue  vector-search-box-show-thumbnail vector-search-box-auto-expand-width vector-search-box">
+	<div>
+			<h3 >
+				<label for="searchInput">Search</label>
+			</h3>
+		<form action="/index.php" id="searchform"
+			class="vector-search-box-form">
+			<div id="simpleSearch"
+				class="vector-search-box-inner"
+				 data-search-loc="header-navigation">
+				<input class="vector-search-box-input"
+					 type="search" name="search" placeholder="Search BF2 Technical Information Wiki" aria-label="Search BF2 Technical Information Wiki" autocapitalize="sentences" title="Search BF2 Technical Information Wiki [f]" accesskey="f" id="searchInput"
+				/>
+				<input type="hidden" name="title" value="Special:Search"/>
+				<input id="mw-searchButton"
+					 class="searchButton mw-fallbackSearchButton" type="submit" name="fulltext" title="Search the pages for this text" value="Search" />
+				<input id="searchButton"
+					 class="searchButton" type="submit" name="go" title="Go to a page with this exact name if it exists" value="Go" />
+			</div>
+		</form>
+	</div>
+</div>
+
+		</div>
+	</div>
+	
+
+<div id="mw-panel">
+	<div id="p-logo" role="banner">
+		<a class="mw-wiki-logo" href="/index.php/Main_Page"
+			title="Visit the main page"></a>
+	</div>
+	
+<nav id="p-navigation" class="mw-portlet mw-portlet-navigation vector-menu vector-menu-portal portal" aria-labelledby="p-navigation-label" role="navigation" 
+	 >
+	<label id="p-navigation-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Navigation</span>
+	</label>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="n-mainpage-description" class="mw-list-item"><a href="/index.php/Main_Page" icon="home" title="Visit the main page [z]" accesskey="z"><span>Main page</span></a></li><li id="n-recentchanges" class="mw-list-item"><a href="/index.php/Special:RecentChanges" icon="recentChanges" title="A list of recent changes in the wiki [r]" accesskey="r"><span>Recent changes</span></a></li><li id="n-randompage" class="mw-list-item"><a href="/index.php/Special:Random" icon="die" title="Load a random page [x]" accesskey="x"><span>Random page</span></a></li><li id="n-help" class="mw-list-item"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" icon="help" title="The place to find out"><span>Help</span></a></li></ul>
+		
+	</div>
+</nav>
+
+	
+<nav id="p-Project_Reality" class="mw-portlet mw-portlet-Project_Reality vector-menu vector-menu-portal portal" aria-labelledby="p-Project_Reality-label" role="navigation" 
+	 >
+	<label id="p-Project_Reality-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Project Reality</span>
+	</label>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="n-Forums" class="mw-list-item"><a href="http://realitymod.com/forum/" rel="nofollow"><span>Forums</span></a></li><li id="n-GitHub" class="mw-list-item"><a href="https://github.com/realitymod" rel="nofollow"><span>GitHub</span></a></li><li id="n-IRC" class="mw-list-item"><a href="http://www.realitymod.com/irc/" rel="nofollow"><span>IRC</span></a></li></ul>
+		
+	</div>
+</nav>
+
+<nav id="p-tb" class="mw-portlet mw-portlet-tb vector-menu vector-menu-portal portal" aria-labelledby="p-tb-label" role="navigation" 
+	 >
+	<label id="p-tb-label" aria-label="" class="vector-menu-heading">
+		<span class="vector-menu-heading-label">Tools</span>
+	</label>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="t-whatlinkshere" class="mw-list-item"><a href="/index.php/Special:WhatLinksHere/Scripts:ConParser" title="A list of all wiki pages that link here [j]" accesskey="j"><span>What links here</span></a></li><li id="t-recentchangeslinked" class="mw-list-item"><a href="/index.php/Special:RecentChangesLinked/Scripts:ConParser" rel="nofollow" title="Recent changes in pages linked from this page [k]" accesskey="k"><span>Related changes</span></a></li><li id="t-specialpages" class="mw-list-item"><a href="/index.php/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q"><span>Special pages</span></a></li><li id="t-print" class="mw-list-item"><a href="javascript:print();" rel="alternate" title="Printable version of this page [p]" accesskey="p"><span>Printable version</span></a></li><li id="t-permalink" class="mw-list-item"><a href="/index.php?title=Scripts:ConParser&amp;oldid=123" title="Permanent link to this revision of the page"><span>Permanent link</span></a></li><li id="t-info" class="mw-list-item"><a href="/index.php?title=Scripts:ConParser&amp;action=info" title="More information about this page"><span>Page information</span></a></li></ul>
+		
+	</div>
+</nav>
+
+	
+</div>
+
+</div>
+
+<footer id="footer" class="mw-footer" role="contentinfo" >
+	<ul id="footer-info">
+	<li id="footer-info-lastmod"> This page was last edited on 22 June 2018, at 15:34.</li>
+</ul>
+
+	<ul id="footer-places">
+	<li id="footer-places-privacy"><a href="/index.php/BF2_Technical_Information_Wiki:Privacy_policy" title="BF2 Technical Information Wiki:Privacy policy">Privacy policy</a></li>
+	<li id="footer-places-about"><a href="/index.php/BF2_Technical_Information_Wiki:About" title="BF2 Technical Information Wiki:About">About BF2 Technical Information Wiki</a></li>
+	<li id="footer-places-disclaimer"><a href="/index.php/BF2_Technical_Information_Wiki:General_disclaimer" title="BF2 Technical Information Wiki:General disclaimer">Disclaimers</a></li>
+</ul>
+
+	<ul id="footer-icons" class="noprint">
+	<li id="footer-poweredbyico"><a href="https://www.mediawiki.org/"><img src="/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" srcset="/resources/assets/poweredby_mediawiki_132x47.png 1.5x, /resources/assets/poweredby_mediawiki_176x62.png 2x" width="88" height="31" loading="lazy"/></a></li>
+</ul>
+
+</footer>
+
+<script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgPageParseReport":{"limitreport":{"cputime":"0.007","walltime":"0.039","ppvisitednodes":{"value":25,"limit":1000000},"postexpandincludesize":{"value":0,"limit":2097152},"templateargumentsize":{"value":0,"limit":2097152},"expansiondepth":{"value":2,"limit":100},"expensivefunctioncount":{"value":0,"limit":100},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":4058,"limit":5000000},"timingprofile":["100.00%    0.000      1 -total"]},"cachereport":{"timestamp":"20220803175114","ttl":86400,"transientcontent":false}}});mw.config.set({"wgBackendResponseTime":1003});});</script>
+</body>
+</html>

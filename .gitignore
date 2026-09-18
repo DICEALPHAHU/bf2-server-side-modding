@@ -1,0 +1,16 @@
+# OS / editor junk
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp
+
+# Python bytecode (BF2's embedded python is 2.3.4; never commit its caches)
+*.pyc
+*.pyo
+
+# Don't commit local test output or map backups
+*.dsh-orig
+*.deepseek-backup
+server-console.log
+mappython.log
+admin-probe.log

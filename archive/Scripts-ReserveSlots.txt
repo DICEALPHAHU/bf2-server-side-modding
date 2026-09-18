@@ -1,0 +1,979 @@
+﻿Scripts:ReserveSlots - BF2 Technical Information Wiki
+Scripts:ReserveSlots
+From BF2 Technical Information Wiki
+Jump to navigation
+Jump to search
+This will open a file "knownplayers.txt" and use it to maintain a list of players who should get priority.
+To use it, log in with rcon and type "rcon addPlayer playerName" or "rcon removePlayer playerName". You can change the server mode with "rcon changeMode mode" where mode is public, private or semiprivate. Public is anything goes, private is list only and semiprivate let's anyone join but will kick players off the list to make room for players on the list if the server gets full. Semiprivate will only kick commanders as a last resort.
+There's also "rcon numFromList" to get the number of people on the server who are on the list. "rcon isOnList playername" is obvious, and "rcon currMode" will tell you what mode the server is in.
+Enjoy!
+Call this file kickoutsiders.py and put it in your standard_admin folder along with a knownplayers.txt file.
+kickoutsiders.py:
+import host
+import bf2
+scriptName = 'Doc & sirSolarius Kicker v1.7'
+fileName = 'admin/standard_admin/knownplayers.txt'
+knownPlayers = []
+mode = 1
+def init():
+print "Starting " + scriptName
+global knownPlayers, fileName
+playersFile = file(fileName, 'r')
+for i in playersFile:
+knownPlayers.append(i.rstrip())
+playersFile.close()
+print knownPlayers
+host.registerHandler('PlayerConnect', onPlayerConnect, 1)
+def onPlayerConnect(aPlayer):
+global knownPlayers, mode
+# private
+if mode == 0:
+if not aPlayer.getName() in knownPlayers:
+host.rcon_invoke('game.sayAll "' + scriptName + ': Player ' + aPlayer.getName() + ' was not on the list!' + '"')
+host.rcon_invoke('admin.kickPlayer ' + str(aPlayer.index))
+# semiprivate
+elif mode == 1:
+#if we're at capacity (new person fills our extra spot)
+if bf2.playerManager.getNumberOfPlayers() ==  bf2.serverSettings.getMaxPlayers():
+# if he's not on the list, put him back where he came from
+if not aPlayer.getName() in knownPlayers:
+host.rcon_invoke('game.sayAll "' + scriptName + ': Player ' + aPlayer.getName() + ' kicked: no room for people off the list!' + '"')
+host.rcon_invoke('admin.kickPlayer ' + str(aPlayer.index))
+return
+# he's on the list: kick someone who isn't
+else:
+currPlayers=bf2.playerManager.getPlayers()
+foundCommander=0
+commander=aPlayer
+for i in currPlayers:
+# if we found someone to toss out
+if not i.getName() in knownPlayers:
+# if he's the commander, try to find someone else
+if i.isCommander():
+commander=i
+foundCommander=1
+else:
+host.rcon_invoke('game.sayAll "' + scriptName + ': Player ' + i.getName() + ' kicked for ' + aPlayer.getName() + '"')
+host.rcon_invoke('admin.kickPlayer ' + str(i.index))
+return
+# if we checked everyone and only the commander remains... bye bye
+if foundCommander == 1:
+host.rcon_invoke('game.sayAll "' + scriptName + ': Player ' + commander.getName() + ' kicked for ' + aPlayer.getName() + '"')
+host.rcon_invoke('admin.kickPlayer ' + str(commander.index))
+else:
+# no one to kick =(
+#host.rcon_invoke('game.sayAll "' + scriptName + ': Player ' + aPlayer.getName() + ' kicked: no room even for people on the list!' + '"')
+#host.rcon_invoke('admin.kickPlayer ' + str(aPlayer.index))
+return
+def changeMode(m):
+global mode, knownPlayers, scriptName
+if m == 'private':
+host.rcon_invoke('game.sayAll "' + scriptName + ': Changing to private mode.  Flushing the undesirables!"')
+currPlayers=bf2.playerManager.getPlayers()
+for i in currPlayers:
+if not i.getName() in knownPlayers:
+host.rcon_invoke('admin.kickPlayer ' + str(i.index))
+mode=0
+elif m == 'semiprivate':
+host.rcon_invoke('game.sayAll "' + scriptName + ': Changing to semiprivate mode.  Bring on some asshats!"')
+mode=1
+else:
+host.rcon_invoke('game.sayAll "' + scriptName + ': Changing to public mode.  Bring on the asshats!"')
+mode=2
+def addPlayerToList(aPlayerName):
+global fileName, knownPlayers
+if aPlayerName in knownPlayers:
+print 'User already in list!'
+return
+playersFile = file(fileName, 'a')
+playersFile.write(aPlayerName+'\n')
+knownPlayers.append(aPlayerName)
+print 'User added to list.'
+def writeMode(ctx):
+global mode
+if (mode == 0):
+ctx.write('The current mode is private.')
+elif(mode == 1):
+ctx.write('The current mode is semiprivate.')
+else:
+ctx.write('The current mode is public.')
+def writeNumList(ctx):
+global knownPlayers
+playerCount=0
+currPlayers=bf2.playerManager.getPlayers()
+for i in currPlayers:
+if i.getName() in knownPlayers:
+playerCount=playerCount+1
+ctx.write('There are %i players from the list online.' &#160;% (playerCount) )
+def isOnList(player, ctx):
+global knownPlayers
+if player in knownPlayers:
+ctx.write('Player ' + player + ' is registered on the list.')
+else:
+ctx.write('Player ' + player + ' is *not* on the list.  Do what you must with him.')
+def removePlayerFromList(aPlayerName):
+global fileName, knownPlayers
+if not aPlayerName in knownPlayers:
+return
+knownPlayers.remove(aPlayerName)
+playersFile = file(fileName, 'w')
+playersFile.truncate(0)
+for aPlayer in knownPlayers:
+playersFile.write(aPlayer+'\n')
+playersFile.close()
+Now overwrite the default.py file in your admin folder with this.
+default.py:
+# vim: ts=4 noexpandtab
+#
+# Battlefield II -- default remote console module.
+#
+# This is a very simple, TCP based remote console which does simple MD5 digest
+# password authentication. It can be configured via the admin/default.cfg file.
+# Recognized options are 'port' and 'password'.
+#
+# Implementation guidelines for this file (and for your own rcon modules):
+#
+#  - All socket operations MUST be non-blocking. If your module blocks on a
+#    socket the game server will hang.
+#
+#  - Do as little work as possible in update() as it runs in the server main
+#    loop.
+#
+# Other notes:
+#
+#  - To get end-of-message markers (0x04 hex) after each reply, begin your
+#    commands with an ascii 0x02 code. This module will then append the
+#    end-of-message marker to all results. This is useful if you need to wait
+#    for a complete response.
+#
+# Copyright (c)2004 Digital Illusions CE AB
+# Author: Andreas `dep' Fredriksson
+import socket
+import errno
+import host
+import bf2
+import types
+import md5
+import string
+import random
+import standard_admin.kickoutsiders
+options = {
+'port': '4711',
+'password': None,
+# True if multiple commands should be processed in one update and
+# if as many responses as possible should be sent each update.
+'allowBatching': False
+}
+# Returns a seed string of random characters to be used as a salt to protect
+# password sniffing.
+def make_seed(seed_length):
+return ''.join([string.ascii_letters[random.randint(0, len(string.ascii_letters)-1)] for x in xrange(0, seed_length)])
+# Concats a seed string with the password and returns an ASCII-hex MD5 digest.
+def digest(seed, pw):
+if not pw: return None
+m = md5.new()
+m.update(seed)
+m.update(pw)
+return m.hexdigest()
+# Parses the config file, if it's there
+def parseConfig():
+def boolFromString (str):
+if str in ['True', 'true', '1']:
+return True
+elif value in ['False', 'false', '0']:
+return False
+else:
+raise ValueError
+fn = 'admin/default.cfg'
+try:
+config = open(fn, 'r')
+lineNo = 0
+for line in config:
+lineNo += 1
+if line.strip()&#160;!= '' and line.strip()&#160;!= '\n':
+try:
+(key, value) = line.split('=')
+key = key.strip()
+value = value.strip()
+if key == 'allowBatching': value = boolFromString (value)
+options[key] = value
+except ValueError:
+print 'warning: syntax error in "%s" on line %d'&#160;% (fn, lineNo)
+except IOError, detail:
+print 'warning: couldn\'t read "%s": %s'&#160;% (fn, detail)
+# A stateful output buffer that knows how to enqueue data and ship it out
+# without blocking.
+class OutputBuffer(object):
+def __init__(self, sock):
+self.sock = sock
+self.data = []
+self.index = 0
+def enqueue(self, str):
+self.data.append(str)
+def update(self):
+allowBatching = options['allowBatching']
+while len(self.data) > 0:
+try:
+item = self.data[0]
+scount = self.sock.send(item[self.index:])
+self.index += scount
+if self.index == len(item):
+del self.data[0]
+self.index = 0
+except socket.error, detail:
+if detail[0]&#160;!= errno.EWOULDBLOCK:
+return detail[1]
+if not allowBatching:
+break
+return None
+# Each TCP connection is represented by an object of this class.
+class AdminConnection(object):
+def __init__(self, srv, sock, addr):
+print 'new rcon/admin connection from %s:%d'&#160;% (addr[0], addr[1])
+self.server = srv
+self.sock = sock
+self.addr = addr
+self.sock.setblocking(0)
+self.buffer = ''
+self.seed = make_seed(16)
+self.correct_digest = digest(self.seed, options['password'])
+self.outbuf = OutputBuffer(self.sock)
+# Welcome message *must* end with \n\n
+self.outbuf.enqueue('### Battlefield 2 default RCON/admin ready.\n')
+self.outbuf.enqueue('### Digest seed: %s\n'&#160;% (self.seed))
+self.outbuf.enqueue('\n') # terminate welcome message with extra LF
+def update(self):
+err = None
+try:
+allowBatching = options['allowBatching']
+while not err:
+data = self.sock.recv(1024)
+if data:
+self.buffer += data
+while not err:
+nlpos = self.buffer.find('\n')
+if nlpos&#160;!= -1:
+self.server.onRemoteCommand(self, self.buffer[0:nlpos])
+self.buffer = self.buffer[nlpos+1:] # keep rest of buffer
+else:
+if len(self.buffer) > 128:
+err = 'data format error: no newline in message'
+break
+if not allowBatching: break
+else:
+err = 'peer disconnected'
+if not allowBatching: break
+except socket.error, detail:
+if detail[0]&#160;!= errno.EWOULDBLOCK:
+err = detail[1]
+if not err:
+err = self.outbuf.update()
+if err:
+print 'rcon: closing %s:%d: %s'&#160;% (self.addr[0], self.addr[1], err)
+try:
+self.sock.shutdown(2)
+self.sock.close()
+except:
+print 'rcon: warning: failed to close %s'&#160;% (self.addr)
+pass
+return 0
+else:
+return 1
+# Context passed to remote command implementations for them to write output to
+# either a remote tcp socket or an in-game client executing 'rcon <command>'.
+class CommandContext(object):
+def __init__(self):
+self.player = None
+self.socket = None
+self.output = []
+def isInGame(self): return self.player is not None
+def isSocket(self): return self.socket is not None
+def write(self, text): self.output.append(text)
+# The server itself.
+class AdminServer(object):
+def __init__(self, port):
+# state for tcp rcon connections
+self.port = port
+self.backlog = 1
+self.peers = []
+self.openSocket()
+# state for in-game rcon connections
+host.registerHandler('RemoteCommand', self.onRemoteCommand, 1)
+host.registerHandler('PlayerDisconnect', self.onPlayerDisconnect, 1)
+host.registerHandler('ChatMessage', self.onChatMessage, 1)
+# contains player ids for players which have successfully authenticated
+# themselves with 'rcon login <passwd>'
+self.authed_players = {}
+# contains sockets for connections which have successfully authenticated
+# themselves with 'login <passwd>'
+self.authed_sockets = {}
+# rcon commands supported in this vanilla version
+self.rcon_cmds = {
+'login': self.rcmd_login,
+'users': self.rcmd_users,
+'exec': self.rcmd_exec,
+'addPlayer': self.rcmd_addPlayer,
+'removePlayer': self.rcmd_removePlayer,
+'changeMode': self.rcmd_changeMode,
+'currentMode': self.rcmd_currMode,
+'numFromList': self.rcmd_numFromList,
+'isOnList': self.rcmd_isOnList
+}
+# Called when a user types 'rcon ' followed by any string in a client
+# console window or when a TCP client sends a complete line to be
+# evaluated.
+def onRemoteCommand(self, playerid_or_socket, cmd):
+cmd = cmd.strip()
+interactive = True
+# Is this a non-interactive client?
+if len(cmd) > 0 and cmd[0] == '\x02':
+cmd = cmd[1:]
+interactive = False
+spacepos = cmd.find(' ')
+if spacepos == -1: spacepos=len(cmd)
+subcmd = cmd[0:spacepos]
+ctx = CommandContext()
+authed = 0
+if type(playerid_or_socket) == types.IntType:
+ctx.player = playerid_or_socket
+authed = self.authed_players.has_key(ctx.player)
+else:
+ctx.socket = playerid_or_socket
+authed = self.authed_sockets.has_key(ctx.socket)
+# you can only login unless you are authenticated
+if subcmd&#160;!= 'login' and not authed:
+ctx.write('error: not authenticated: you can only invoke \'login\'\n')
+else:
+if self.rcon_cmds.has_key(subcmd):
+self.rcon_cmds[subcmd](ctx, cmd[spacepos+1:])
+else:
+ctx.write('unknown command: \'%s\'\n'&#160;% (subcmd))
+feedback = ''.join(ctx.output)
+if ctx.socket:
+if interactive:
+ctx.socket.outbuf.enqueue(feedback)
+else:
+ctx.socket.outbuf.enqueue(feedback + '\x04')
+else:
+host.rcon_feedback(ctx.player, feedback)
+# When players disconnect, remove them from the auth map if they were
+# authenticated so that the next user with the same id doesn't get rcon
+# access.
+def onPlayerDisconnect(self, player_id):
+if self.authed_players.has_key(player_id):
+del self.authed_players[player_id]
+# Called whenever a player issues a chat string.
+def onChatMessage(self, player_id, text, channel, flags):
+print 'chat: pid=%d text=\'%s\' channel=%s'&#160;% (player_id, text, channel)
+# Sets up the listening TCP RCON socket. This binds to 0.0.0.0, which may
+# not be what you want but it's a sane default for most installations.
+def openSocket(self):
+try:
+self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, 0)
+#self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+self.sock.bind(('0.0.0.0', self.port))
+self.sock.listen(self.backlog)
+self.sock.setblocking(0)
+except socket.error, detail:
+print 'failed to bind rcon socket--only in-game rcon will be enabled'
+# WARNING: update is called very frequently -- don't go crazy with logic
+# here.
+def update(self):
+# if we don't have a socket, just return
+if not self.sock: return
+# without blocking, check for new connections
+try:
+conn, peeraddr = self.sock.accept()
+self.peers.append(AdminConnection(self, conn, peeraddr))
+except socket.error, detail:
+if detail[0]&#160;!= errno.EWOULDBLOCK:
+raise socket.error, detail
+# update clients and mark connections that fail their update
+disc = []
+for client in self.peers:
+if not client.update(): disc.append(client)
+# delete any auth status for closed tcp connections
+for d in disc:
+if self.authed_sockets.has_key(d): del self.authed_sockets[d]
+# now keep the remaining clients
+self.peers = filter(lambda x: x not in disc, self.peers)
+def shutdown(self):
+if self.sock:
+self.sock.close()
+# Command implementations go here (member functions of the AdminServer)
+# Allows a in-game rcon client to authenticate and get access.
+def rcmd_login(self, ctx, cmd):
+success = 0
+if ctx.isInGame():
+# We're called by an in-game rcon client, use plain-text password
+# (encoded into bf2 network stream).
+if cmd.strip() == options['password']:
+self.authed_players[ctx.player] = 1
+success = 1
+elif self.authed_players.has_key(ctx.player):
+del self.authed_players[ctx.player]
+else:
+# tcp client, require seeded digest to match instead of pw
+if cmd.strip() == ctx.socket.correct_digest:
+self.authed_sockets[ctx.socket] = 1
+print 'rcon: tcp client from %s:%d logged on'&#160;% ctx.socket.addr
+success = 1
+else:
+if self.authed_sockets.has_key(ctx.socket):
+del self.authed_sockets[ctx.socket]
+print 'rcon: tcp client from %s:%d failed pw challenge'&#160;% ctx.socket.addr
+if success:
+ctx.write('Authentication successful, rcon ready.\n')
+else:
+ctx.write('Authentication failed.\n')
+# Lists rcon-authenticated players.
+def rcmd_users(self, ctx, cmd):
+ctx.write('active rcon users:\n')
+for id in self.authed_players:
+if id == -1:
+ctx.write('-1 (local server console)\n')
+else:
+try:
+player = bf2.playerManager.getPlayerByIndex(id)
+ctx.write('%d from %s name=\'%s\'\n'&#160;% (id, player.getAddress(), player.getName()))
+except:
+ctx.write('%d (no info)\n'&#160;% (id))
+for peer in self.authed_sockets:
+ctx.write('tcp: %s:%d\n'&#160;% (peer.addr[0], peer.addr[1]))
+# Executes a console command on the server.
+def rcmd_exec(self, ctx, cmd):
+ctx.write(host.rcon_invoke(cmd))
+def rcmd_addPlayer(self, ctx, cmd):
+ctx.write('Adding player ' + cmd)
+standard_admin.kickoutsiders.addPlayerToList(cmd)
+def rcmd_removePlayer(self, ctx, cmd):
+ctx.write('Removing player ' + cmd)
+standard_admin.kickoutsiders.removePlayerFromList(cmd)
+def rcmd_changeMode(self, ctx, cmd):
+standard_admin.kickoutsiders.changeMode(cmd)
+def rcmd_currMode(self, ctx, cmd):
+standard_admin.kickoutsiders.writeMode(ctx)
+def rcmd_numFromList(self, ctx, cmd):
+standard_admin.kickoutsiders.writeNumList(ctx)
+def rcmd_isOnList(self, ctx, cmd):
+standard_admin.kickoutsiders.isOnList(cmd, ctx)
+# parse the configuration file
+parseConfig()
+# our single server instance
+server = AdminServer(int(options['port']))
+# These functions are called from the engine -- we implement them in terms of a
+# class instance:
+def init():
+print 'initializing default admin/rcon module'
+# load (optional) admin scripts like teamkill punish and autobalance
+import standard_admin
+def shutdown():
+if server:
+print 'shutting down default admin/rcon module'
+server.shutdown()
+def update():
+if server: server.update()
+note from Milton: Wow this script seems to be really good, unfortunately I cannot test it because I am using BF2CC, do you think that you could modify the default.py that BF2CC has in order to make it so that we can use both BF2CC and your script?
+note from Brian:I've adapted the script for the BF2CC app. Enjoy!
+default.py
+# vim: ts=4 noexpandtab
+#
+# Battlefield II -- default remote console module.
+#
+# This is a very simple, TCP based remote console which does simple MD5 digest
+# password authentication. It can be configured via the admin/default.cfg file.
+# Recognized options are 'port' and 'password'.
+#
+# Implementation guidelines for this file (and for your own rcon modules):
+#
+#  - All socket operations MUST be non-blocking. If your module blocks on a
+#    socket the game server will hang.
+#
+#  - Do as little work as possible in update() as it runs in the server main
+#    loop.
+#
+# Other notes:
+#
+#  - To get end-of-message markers (0x04 hex) after each reply, begin your
+#    commands with an ascii 0x02 code. This module will then append the
+#    end-of-message marker to all results. This is useful if you need to wait
+#    for a complete response.
+#
+# Copyright (c)2004 Digital Illusions CE AB
+# Author: Andreas `dep' Fredriksson
+#
+# This version of this script is managed by the BF2CC crew.
+#
+# CHANGE LOG
+# June 13 - Hooked in BF2CC.py file.  Seperating BF2CC custom commands from EA's customs commands.
+#
+# June 25 - Added exception handlers for all functions.
+# June 25 - Added python log file support for errors and 'print' statements in the python code. (redir of stdout) options - pythonlogfile
+# June 25 - Added support for alternative IP binding.  options - ip
+#
+# Version 3.5
+# July 5 - Added some security related fixes
+# July 5 - Added player rank into player list function
+import socket
+import errno
+import host
+import bf2
+import types
+import md5
+import string
+import random
+import bf2cc # Added BF2CC June 13, 2005
+import sys
+import standard_admin.kickoutsiders
+# Set these options in the default.cfg
+options = {
+'port': '4711',
+'password': None,
+'ip': '0.0.0.0', # Added BF2CC rbarone
+'pythonlogfile': 'pythonlog.txt' # Added BF2CC rbarone
+}
+# Function added BF2CC rbarone
+def printExceptionTrace(e, location):
+# generate line number
+lineNum = ''
+execInfo = sys.exc_info()
+tb = execInfo[2]
+while tb is not None:
+if lineNum == '':
+lineNum = str(tb.tb_lineno)
+else:
+lineNum += ', ' + str(tb.tb_lineno)
+tb = tb.tb_next
+print('**** ERROR ERROR ERROR ****\n  Exception generated in %s\n     %s\n     %s\n     (Line(s): %s)\n'&#160;% (location, str(execInfo[0]), str(e), lineNum))
+if options['pythonlogfile']&#160;!= '':
+sys.stdout.flush()
+# Returns a seed string of random characters to be used as a salt to protect
+# password sniffing.
+def make_seed(seed_length):
+return ''.join([string.ascii_letters[random.randint(0, len(string.ascii_letters)-1)] for x in xrange(0, seed_length)])
+# Concats a seed string with the password and returns an ASCII-hex MD5 digest.
+def digest(seed, pw):
+if not pw: return None
+m = md5.new()
+m.update(seed)
+m.update(pw)
+return m.hexdigest()
+# Parses the config file, if it's there
+def parseConfig():
+def boolFromString (str):
+if str in ['True', 'true', '1']:
+return True
+elif value in ['False', 'false', '0']:
+return False
+else:
+raise ValueError
+fn = 'admin/default.cfg'
+try:
+config = open(fn, 'r')
+lineNo = 0
+for line in config:
+lineNo += 1
+if line.strip()&#160;!= '' and line.strip()&#160;!= '\n':
+try:
+(key, value) = line.split('=')
+key = key.strip()
+value = value.strip()
+#if key == 'allowBatching': value = boolFromString (value) # Removed BF2CC rbarone
+options[key] = value
+except ValueError:
+print 'warning: syntax error in "%s" on line %d'&#160;% (fn, lineNo)
+except IOError, detail:
+print 'warning: couldn\'t read "%s": %s'&#160;% (fn, detail)
+except Exception, e:
+printExceptionTrace(e, 'parseConfig')
+if options['pythonlogfile']&#160;!= '':
+global stdoutFlushTimer
+stdoutFlushTimer = bf2.Timer(onFlushStdout, 10, 1)
+stdoutFlushTimer.setRecurring(10)
+sys.stdout = file(options['pythonlogfile'], 'a')
+def onFlushStdout(data):
+try:
+sys.stdout.flush()
+except:
+print 'could not flush'
+pass
+# A stateful output buffer that knows how to enqueue data and ship it out
+# without blocking.
+class OutputBuffer(object):
+def __init__(self, sock):
+self.sock = sock
+self.data = []
+self.index = 0
+def enqueue(self, str):
+try:                    # Added BF2CC rbaron
+self.data.append(str)
+except Exception, e:
+printExceptionTrace(e, 'enqueue')
+def update(self):
+allowBatching = True # Changed BF2CC rbarone - Always set to true
+while len(self.data) > 0:
+try:
+item = self.data[0]
+scount = self.sock.send(item[self.index:])
+self.index += scount
+if self.index == len(item):
+del self.data[0]
+self.index = 0
+except socket.error, detail:
+if detail[0]&#160;!= errno.EWOULDBLOCK:
+return detail[1]
+except Exception, e:
+printExceptionTrace(e, 'OutputBuffer.update')
+# if not allowBatching: # Removed BF2CC rbarone
+#    break
+return None
+# Each TCP connection is represented by an object of this class.
+class AdminConnection(object):
+def __init__(self, srv, sock, addr):
+try:
+print 'new rcon/admin connection from %s:%d'&#160;% (addr[0], addr[1])
+self.server = srv
+self.sock = sock
+self.addr = addr
+self.sock.setblocking(0)
+self.buffer = ''
+self.seed = make_seed(16)
+self.correct_digest = digest(self.seed, options['password'])
+self.outbuf = OutputBuffer(self.sock)
+self.bf2ccClient = bf2cc.Client(srv.bf2ccServer) # Added BF2CC June 13, 2005 rbarone
+# Welcome message *must* end with \n\n
+self.outbuf.enqueue('### Battlefield 2 version ' + bf2cc.scriptVersion + ' ' + bf2cc.serverType + ' default RCON/admin ready.\n') # Changed BF2CC - Added script version rbarone
+self.outbuf.enqueue('### Digest seed: %s\n'&#160;% (self.seed))
+self.outbuf.enqueue('\n') # terminate welcome message with extra LF
+except Exception, e:
+printExceptionTrace(e, 'AdminConnection.__init__')
+def update(self):
+err = None
+try:
+allowBatching = True # Changed BF2CC - Always set to true
+while not err:
+data = self.sock.recv(1024)
+if data:
+self.buffer += data
+while not err:
+nlpos = self.buffer.find('\n')
+if nlpos&#160;!= -1:
+self.server.onRemoteCommand(self, self.buffer[0:nlpos])
+self.buffer = self.buffer[nlpos+1:] # keep rest of buffer
+else:
+if len(self.buffer) > 128:
+err = 'data format error: no newline in message'
+break
+#if not allowBatching: break # Removed BF2CC rbarone
+else:
+err = 'peer disconnected'
+#if not allowBatching: break #Removed BF2CC rbarone
+except socket.error, detail:
+if detail[0]&#160;!= errno.EWOULDBLOCK:
+err = detail[1]
+except Exception, e:
+printExceptionTrace(e, 'AdminConnection.update')
+err = 'Exception in AdminConnection.update'
+try:
+if not err:
+err = self.outbuf.update()
+if err:
+print 'rcon: closing %s:%d: %s'&#160;% (self.addr[0], self.addr[1], err)
+self.bf2ccClient.UnregisterClient() # Added BF2CC June 13, 2005 rbarone
+try:
+self.bf2ccClient = None
+self.sock.shutdown(2)
+self.sock.close()
+except:
+print 'rcon: warning: failed to close %s'&#160;% (self.addr)
+pass
+return 0
+else:
+return 1
+except Exception, e:
+printExceptionTrace(e, 'AdminConnection.update')
+err = 'Exception in AdminConnection.update'
+# Context passed to remote command implementations for them to write output to
+# either a remote tcp socket or an in-game client executing 'rcon <command>'.
+class CommandContext(object):
+def __init__(self):
+self.player = None
+self.socket = None
+self.output = []
+def isInGame(self): return self.player is not None
+def isSocket(self): return self.socket is not None
+def write(self, text): self.output.append(text)
+# The server itself.
+class AdminServer(object):
+def __init__(self, port):
+try:
+# state for tcp rcon connections
+self.port = port
+self.backlog = 1
+self.peers = []
+self.openSocket()
+# state for in-game rcon connections
+host.registerHandler('RemoteCommand', self.onRemoteCommand, 1)
+host.registerHandler('PlayerDisconnect', self.onPlayerDisconnect, 1)
+host.registerHandler('ChatMessage', self.onChatMessage, 1)
+# contains player ids for players which have successfully authenticated
+# themselves with 'rcon login <passwd>'
+self.authed_players = {}
+# contains sockets for connections which have successfully authenticated
+# themselves with 'login <passwd>'
+self.authed_sockets = {}
+# rcon commands supported in this vanilla version
+self.rcon_cmds = {
+'login': self.rcmd_login,
+'users': self.rcmd_users,
+'exec': self.rcmd_exec,
+'bf2cc': self.rcmd_bf2cc,
+'addPlayer': self.rcmd_addPlayer,
+'removePlayer': self.rcmd_removePlayer,
+'changeMode': self.rcmd_changeMode,
+'currMode': self.rcmd_currMode,
+'numFromList': self.rcmd_numFromList,
+'isOnList': self.rcmd_isOnList,
+}
+self.bf2ccServer = bf2cc.Server(self) # Added BF2CC June 13, 2005
+#self.bf2ccServer.RegisterServer(self) # Added BF2CC June 13, 2005
+except Exception, e:
+printExceptionTrace(e, 'AdminServer.__init__')
+raise e
+# Called when a user types 'rcon ' followed by any string in a client
+# console window or when a TCP client sends a complete line to be
+# evaluated.
+def onRemoteCommand(self, playerid_or_socket, cmd):
+try:
+cmd = cmd.strip()
+interactive = True
+# Is this a non-interactive client?
+if len(cmd) > 0 and cmd[0] == '\x02':
+cmd = cmd[1:]
+interactive = False
+spacepos = cmd.find(' ')
+if spacepos == -1: spacepos=len(cmd)
+subcmd = cmd[0:spacepos]
+ctx = CommandContext()
+authed = 0
+if type(playerid_or_socket) == types.IntType:
+ctx.player = playerid_or_socket
+authed = self.authed_players.has_key(ctx.player)
+else:
+ctx.socket = playerid_or_socket
+authed = self.authed_sockets.has_key(ctx.socket)
+# you can only login unless you are authenticated
+if subcmd&#160;!= 'login' and not authed:
+ctx.write('error: not authenticated: you can only invoke \'login\'\n')
+else:
+if self.rcon_cmds.has_key(subcmd):
+self.rcon_cmds[subcmd](ctx, cmd[spacepos+1:])
+else:
+ctx.write('unknown command: \'%s\'\n'&#160;% (subcmd))
+feedback = ''.join(ctx.output)
+if ctx.socket:
+if interactive:
+ctx.socket.outbuf.enqueue(feedback)
+else:
+ctx.socket.outbuf.enqueue(feedback + '\x04')
+else:
+host.rcon_feedback(ctx.player, feedback)
+except Exception, e:
+printExceptionTrace(e, 'AdminServer.onRemoteCommand')
+# When players disconnect, remove them from the auth map if they were
+# authenticated so that the next user with the same id doesn't get rcon
+# access.
+def onPlayerDisconnect(self, player):
+try:
+if self.authed_players.has_key(player.index):
+print('Removing PlayerID: %s'&#160;% str(player.index))
+del self.authed_players[player.index]
+except Exception, e:
+printExceptionTrace(e, 'AdminServer.onPlayerDisconnect')
+# Called whenever a player issues a chat string.
+def onChatMessage(self, player_id, text, channel, flags):
+try:
+print 'chat: pid=%d text=\'%s\' channel=%s'&#160;% (player_id, text, channel)
+except Exception, e:
+printExceptionTrace(e, 'AdminServer.onChatMessage')
+# Sets up the listening TCP RCON socket. This binds to 0.0.0.0, which may
+# not be what you want but it's a sane default for most installations.
+def openSocket(self):
+try:
+self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, 0)
+#self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+self.sock.bind((options['ip'], self.port))
+self.sock.listen(self.backlog)
+self.sock.setblocking(0)
+except socket.error, detail:
+print 'failed to bind rcon socket.  Check the IP and port configured, it may be in use by another program.'
+self.sock = None
+except Exception, e:
+printExceptionTrace(e, 'AdminServer.openSocket')
+# WARNING: update is called very frequently -- don't go crazy with logic
+# here.
+def update(self):
+try:
+# if we don't have a socket, just return
+if not self.sock: return
+# without blocking, check for new connections
+try:
+conn, peeraddr = self.sock.accept()
+self.peers.append(AdminConnection(self, conn, peeraddr))
+except socket.error, detail:
+if detail[0]&#160;!= errno.EWOULDBLOCK:
+raise socket.error, detail
+# update clients and mark connections that fail their update
+disc = []
+for client in self.peers:
+if not client.update(): disc.append(client)
+# delete any auth status for closed tcp connections
+for d in disc:
+if self.authed_sockets.has_key(d): del self.authed_sockets[d]
+# now keep the remaining clients
+self.peers = filter(lambda x: x not in disc, self.peers)
+except Exception, e:
+printExceptionTrace(e, 'AdminServer.update')
+def shutdown(self):
+try:
+if self.sock:
+self.sock.close()
+except Exception, e:
+printExceptionTrace(e, 'AdminServer.shutdown')
+# Command implementations go here (member functions of the AdminServer)
+# Allows a in-game rcon client to authenticate and get access.
+def rcmd_login(self, ctx, cmd):
+try:
+success = 0
+if ctx.isInGame():
+# We're called by an in-game rcon client, use plain-text password
+# (encoded into bf2 network stream).
+if cmd.strip() == options['password']:
+self.authed_players[ctx.player] = 1
+success = 1
+print 'rcon: in-game client, player id: %s authenticated'&#160;% str(ctx.player)
+elif self.authed_players.has_key(ctx.player):
+del self.authed_players[ctx.player]
+else:
+# tcp client, require seeded digest to match instead of pw
+if cmd.strip() == ctx.socket.correct_digest:
+self.authed_sockets[ctx.socket] = 1
+print 'rcon: tcp client from %s:%d logged on'&#160;% ctx.socket.addr
+success = 1
+else:
+if self.authed_sockets.has_key(ctx.socket):
+del self.authed_sockets[ctx.socket]
+print 'rcon: tcp client from %s:%d failed pw challenge'&#160;% ctx.socket.addr
+if success:
+if ctx.isSocket():  # Added BF2CC June 13, 2005
+ctx.socket.bf2ccClient.RegisterClient(ctx.socket) # Added BF2CC June 13, 2005
+ctx.write('Authentication successful, rcon ready.\n')
+else:
+ctx.write('Authentication failed.\n')
+except Exception, e:
+printExceptionTrace(e, 'AdminServer.rcmd_login')
+# Lists rcon-authenticated players.
+def rcmd_users(self, ctx, cmd):
+try:
+ctx.write('active rcon users:\n')
+for id in self.authed_players:
+if id == -1:
+ctx.write('-1 (local server console)\n')
+else:
+try:
+player = bf2.playerManager.getPlayerByIndex(id)
+ctx.write('%d from %s name=\'%s\'\n'&#160;% (id, player.getAddress(), player.getName()))
+except:
+ctx.write('%d (no info)\n'&#160;% (id))
+for peer in self.authed_sockets:
+ctx.write('tcp: %s:%d\n'&#160;% (peer.addr[0], peer.addr[1]))
+except Exception, e:
+printExceptionTrace(e, 'AdminServer.rcmd_users')
+# Executes a console command on the server.
+def rcmd_exec(self, ctx, cmd):
+try:
+ctx.write(host.rcon_invoke(cmd))
+except Exception, e:
+printExceptionTrace(e, 'AdminServer.rcmd_exec')
+# Executes a bf2cc command on the server. Added BF2CC June 13, 2005
+def rcmd_bf2cc(self, ctx, cmd): # Added BF2CC June 13, 2005
+try:
+ctx.socket.bf2ccClient.Exec(ctx, cmd) # Added BF2CC June 13, 2005
+except Exception, e:
+printExceptionTrace(e, 'AdminServer.rcmd_bf2cc')
+def rcmd_addPlayer(self, ctx, cmd):
+ctx.write('Adding player ' + cmd)
+standard_admin.kickoutsiders.addPlayerToList(cmd)
+def rcmd_removePlayer(self, ctx, cmd):
+ctx.write('Removing player ' + cmd)
+standard_admin.kickoutsiders.removePlayerFromList(cmd)
+def rcmd_changeMode(self, ctx, cmd):
+standard_admin.kickoutsiders.changeMode(cmd)
+def rcmd_currMode(self, ctx, cmd):
+standard_admin.kickoutsiders.writeMode(ctx)
+def rcmd_numFromList(self, ctx, cmd):
+standard_admin.kickoutsiders.writeNumList(ctx)
+def rcmd_isOnList(self, ctx, cmd):
+standard_admin.kickoutsiders.isOnList(cmd, ctx)
+# parse the configuration file
+parseConfig()
+# our single server instance
+server = AdminServer(int(options['port']))
+# These functions are called from the engine -- we implement them in terms of a
+# class instance:
+def init():
+print 'initializing default admin/rcon module'
+try:
+# load (optional) admin scripts like teamkill punish and autobalance
+import standard_admin
+except Exception, e:
+printExceptionTrace(e, 'default.py.init')
+def shutdown():
+if server:
+print 'shutting down default admin/rcon module'
+server.shutdown()
+def update():
+if server: server.update()
+Retrieved from "
+https://bf2tech.uturista.pt/index.php?title=Scripts:ReserveSlots&oldid=100
+"
+Navigation menu
+Personal tools
+Log in
+Request account
+Namespaces
+Page
+Discussion
+English
+expanded
+collapsed
+Views
+Read
+View source
+View history
+More
+expanded
+collapsed
+Search
+Navigation
+Main page
+Recent changes
+Random page
+Help
+Project Reality
+Forums
+GitHub
+IRC
+Tools
+What links here
+Related changes
+Special pages
+Printable version
+Permanent link
+Page information
+This page was last edited on 22 June 2018, at 15:23.
+Privacy policy
+About BF2 Technical Information Wiki
+Disclaimers

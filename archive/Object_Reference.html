@@ -1,0 +1,811 @@
+﻿
+<!DOCTYPE html>
+<html class="client-nojs" lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>Object Reference - BF2 Technical Information Wiki</title>
+<script>document.documentElement.className="client-js";RLCONF={"wgBreakFrames":!1,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgRequestId":"7e7070ce95d96097ad691d34","wgCSPNonce":!1,"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":!1,"wgNamespaceNumber":0,"wgPageName":"Object_Reference","wgTitle":"Object Reference","wgCurRevisionId":34,"wgRevisionId":34,"wgArticleId":5,"wgIsArticle":!0,"wgIsRedirect":!1,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgRelevantPageName":"Object_Reference","wgRelevantArticleId":5,"wgIsProbablyEditable":!1,"wgRelevantPageIsProbablyEditable":!1,"wgRestrictionEdit":[],"wgRestrictionMove":[]};RLSTATE={"site.styles":"ready","noscript":"ready","user.styles":"ready","user":
+"ready","user.options":"loading","skins.vector.styles.legacy":"ready","mediawiki.toc.styles":"ready"};RLPAGEMODULES=["site","mediawiki.page.startup","mediawiki.page.ready","mediawiki.toc","skins.vector.legacy.js"];</script>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.loader.implement("user.options@1hzgi",function($,jQuery,require,module){/*@nomin*/mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
+});});</script>
+<link rel="stylesheet" href="/load.php?lang=en&amp;modules=mediawiki.toc.styles%7Cskins.vector.styles.legacy&amp;only=styles&amp;skin=vector"/>
+<script async="" src="/load.php?lang=en&amp;modules=startup&amp;only=scripts&amp;raw=1&amp;skin=vector"></script>
+<meta name="generator" content="MediaWiki 1.35.1"/>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="BF2 Technical Information Wiki (en)"/>
+<link rel="EditURI" type="application/rsd+xml" href="https://bf2tech.uturista.pt/api.php?action=rsd"/>
+<link rel="alternate" type="application/atom+xml" title="BF2 Technical Information Wiki Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom"/>
+<!--[if lt IE 9]><script src="/resources/lib/html5shiv/html5shiv.js"></script><![endif]-->
+</head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-Object_Reference rootpage-Object_Reference skin-vector action-view skin-vector-legacy">
+<div id="mw-page-base" class="noprint"></div>
+<div id="mw-head-base" class="noprint"></div>
+<div id="content" class="mw-body" role="main">
+	<a id="top"></a>
+	<div id="siteNotice" class="mw-body-content"></div>
+	<div class="mw-indicators mw-body-content">
+	</div>
+	<h1 id="firstHeading" class="firstHeading" lang="en">Object Reference</h1>
+	<div id="bodyContent" class="mw-body-content">
+		<div id="siteSub" class="noprint">From BF2 Technical Information Wiki</div>
+		<div id="contentSub"></div>
+		<div id="contentSub2"></div>
+		
+		<div id="jump-to-nav"></div>
+		<a class="mw-jump-link" href="#mw-head">Jump to navigation</a>
+		<a class="mw-jump-link" href="#searchInput">Jump to search</a>
+		<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div class="mw-parser-output"><p>Python program interact with Battlefield 2 using "objects", as well as "methods" (functions) and "attributes" (data) that are part of those objects. This section is a reference to the objects, methods, and attributes in BF2 that can be accessed and manipulated by Python programs.
+</p>
+<div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none" /><div class="toctitle" lang="en" dir="ltr"><h2 id="mw-toc-heading">Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#host"><span class="tocnumber">1</span> <span class="toctext">host</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#Event_Handler_Methods"><span class="tocnumber">1.1</span> <span class="toctext">Event Handler Methods</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="#Trigger_Methods"><span class="tocnumber">1.2</span> <span class="toctext">Trigger Methods</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#Global_Stats_Methods"><span class="tocnumber">1.3</span> <span class="toctext">Global Stats Methods</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="#.22sh.22_Methods_.28SwiffHost.3F.29"><span class="tocnumber">1.4</span> <span class="toctext">"sh" Methods (SwiffHost?)</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="#.22gl.22_Methods_.28GameLogic.3F.29"><span class="tocnumber">1.5</span> <span class="toctext">"gl" Methods (GameLogic?)</span></a></li>
+<li class="toclevel-2 tocsection-7"><a href="#.22sgl.22_Methods_.28ServerGameLogic.3F.29"><span class="tocnumber">1.6</span> <span class="toctext">"sgl" Methods (ServerGameLogic?)</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="#.22ss.22_Methods_.28Server_Settings.3F.29"><span class="tocnumber">1.7</span> <span class="toctext">"ss" Methods (Server Settings?)</span></a></li>
+<li class="toclevel-2 tocsection-9"><a href="#Object_Manager_Methods"><span class="tocnumber">1.8</span> <span class="toctext">Object Manager Methods</span></a></li>
+<li class="toclevel-2 tocsection-10"><a href="#Timer_Methods"><span class="tocnumber">1.9</span> <span class="toctext">Timer Methods</span></a></li>
+<li class="toclevel-2 tocsection-11"><a href="#Player_Manager_Methods"><span class="tocnumber">1.10</span> <span class="toctext">Player Manager Methods</span></a></li>
+<li class="toclevel-2 tocsection-12"><a href="#RCon_Methods"><span class="tocnumber">1.11</span> <span class="toctext">RCon Methods</span></a></li>
+<li class="toclevel-2 tocsection-13"><a href="#Logging_Methods"><span class="tocnumber">1.12</span> <span class="toctext">Logging Methods</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-14"><a href="#PhysicalObject"><span class="tocnumber">2</span> <span class="toctext">PhysicalObject</span></a>
+<ul>
+<li class="toclevel-2 tocsection-15"><a href="#Methods_for_instances_of_PhysicalObject"><span class="tocnumber">2.1</span> <span class="toctext">Methods for instances of PhysicalObject</span></a></li>
+<li class="toclevel-2 tocsection-16"><a href="#Attributes_for_instances_of_PhysicalObject"><span class="tocnumber">2.2</span> <span class="toctext">Attributes for instances of PhysicalObject</span></a></li>
+<li class="toclevel-2 tocsection-17"><a href="#WeaponObject"><span class="tocnumber">2.3</span> <span class="toctext">WeaponObject</span></a></li>
+<li class="toclevel-2 tocsection-18"><a href="#KitObject"><span class="tocnumber">2.4</span> <span class="toctext">KitObject</span></a></li>
+<li class="toclevel-2 tocsection-19"><a href="#ControlPointObject"><span class="tocnumber">2.5</span> <span class="toctext">ControlPointObject</span></a>
+<ul>
+<li class="toclevel-3 tocsection-20"><a href="#Additional_Methods"><span class="tocnumber">2.5.1</span> <span class="toctext">Additional Methods</span></a></li>
+<li class="toclevel-3 tocsection-21"><a href="#Additional_Attributes"><span class="tocnumber">2.5.2</span> <span class="toctext">Additional Attributes</span></a></li>
+<li class="toclevel-3 tocsection-22"><a href="#Internal_Properties"><span class="tocnumber">2.5.3</span> <span class="toctext">Internal Properties</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-23"><a href="#VehicleObject"><span class="tocnumber">2.6</span> <span class="toctext">VehicleObject</span></a>
+<ul>
+<li class="toclevel-3 tocsection-24"><a href="#Additional_Methods_2"><span class="tocnumber">2.6.1</span> <span class="toctext">Additional Methods</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-25"><a href="#SoldierObject"><span class="tocnumber">2.7</span> <span class="toctext">SoldierObject</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-26"><a href="#bf2.GameStatus"><span class="tocnumber">3</span> <span class="toctext">bf2.GameStatus</span></a></li>
+<li class="toclevel-1 tocsection-27"><a href="#bf2.GameLogic.GameLogic"><span class="tocnumber">4</span> <span class="toctext">bf2.GameLogic.GameLogic</span></a>
+<ul>
+<li class="toclevel-2 tocsection-28"><a href="#Methods_for_the_singleton_object"><span class="tocnumber">4.1</span> <span class="toctext">Methods for the singleton object</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-29"><a href="#bf2.GameLogic.ServerSettings"><span class="tocnumber">5</span> <span class="toctext">bf2.GameLogic.ServerSettings</span></a>
+<ul>
+<li class="toclevel-2 tocsection-30"><a href="#Methods_for_the_singleton_object_2"><span class="tocnumber">5.1</span> <span class="toctext">Methods for the singleton object</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-31"><a href="#bf2.ObjectManager.ObjectManager"><span class="tocnumber">6</span> <span class="toctext">bf2.ObjectManager.ObjectManager</span></a>
+<ul>
+<li class="toclevel-2 tocsection-32"><a href="#Methods_for_the_singleton_object_3"><span class="tocnumber">6.1</span> <span class="toctext">Methods for the singleton object</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-33"><a href="#bf2.PlayerManager.PlayerScore"><span class="tocnumber">7</span> <span class="toctext">bf2.PlayerManager.PlayerScore</span></a>
+<ul>
+<li class="toclevel-2 tocsection-34"><a href="#Class_methods"><span class="tocnumber">7.1</span> <span class="toctext">Class methods</span></a></li>
+<li class="toclevel-2 tocsection-35"><a href="#Class_attributes_stored_in_the_PlayerScore_object"><span class="tocnumber">7.2</span> <span class="toctext">Class attributes stored in the PlayerScore object</span></a></li>
+<li class="toclevel-2 tocsection-36"><a href="#Class_attributes_stored_in_the_BF2_engine"><span class="tocnumber">7.3</span> <span class="toctext">Class attributes stored in the BF2 engine</span></a></li>
+<li class="toclevel-2 tocsection-37"><a href="#Class_attributes_computed_from_other_attribute_values"><span class="tocnumber">7.4</span> <span class="toctext">Class attributes computed from other attribute values</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-38"><a href="#bf2.PlayerManager.Player"><span class="tocnumber">8</span> <span class="toctext">bf2.PlayerManager.Player</span></a>
+<ul>
+<li class="toclevel-2 tocsection-39"><a href="#Instances_created_with"><span class="tocnumber">8.1</span> <span class="toctext">Instances created with</span></a></li>
+<li class="toclevel-2 tocsection-40"><a href="#Class_Attributes"><span class="tocnumber">8.2</span> <span class="toctext">Class Attributes</span></a></li>
+<li class="toclevel-2 tocsection-41"><a href="#Methods"><span class="tocnumber">8.3</span> <span class="toctext">Methods</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-42"><a href="#bf2.PlayerManager.PlayerManager"><span class="tocnumber">9</span> <span class="toctext">bf2.PlayerManager.PlayerManager</span></a>
+<ul>
+<li class="toclevel-2 tocsection-43"><a href="#Methods_for_the_singleton_object_4"><span class="tocnumber">9.1</span> <span class="toctext">Methods for the singleton object</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-44"><a href="#bf2.Timer"><span class="tocnumber">10</span> <span class="toctext">bf2.Timer</span></a>
+<ul>
+<li class="toclevel-2 tocsection-45"><a href="#Class_Methods_2"><span class="tocnumber">10.1</span> <span class="toctext">Class Methods</span></a></li>
+<li class="toclevel-2 tocsection-46"><a href="#Project_Reality_Timer_interface"><span class="tocnumber">10.2</span> <span class="toctext">Project Reality Timer interface</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-47"><a href="#bf2.TriggerManager.TriggerManager"><span class="tocnumber">11</span> <span class="toctext">bf2.TriggerManager.TriggerManager</span></a>
+<ul>
+<li class="toclevel-2 tocsection-48"><a href="#Methods_for_the_singleton_object_5"><span class="tocnumber">11.1</span> <span class="toctext">Methods for the singleton object</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-49"><a href="#bf2.stats.constants"><span class="tocnumber">12</span> <span class="toctext">bf2.stats.constants</span></a>
+<ul>
+<li class="toclevel-2 tocsection-50"><a href="#Functions"><span class="tocnumber">12.1</span> <span class="toctext">Functions</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="host">host</span></h2>
+<p>The host object encapsulates the interfaces between the main BF2 engine (written in C++) and Python modules.  Most host methods will generally not need to be used directly from within Python modules, as standard BF2 Python modules (like bf2.GameLogic, for example) provide object-oriented wrappers around most of the raw BF2 engine functions.
+</p><p>You must <code>import host</code> to access the methods and attributes shown here.
+</p>
+<h3><span class="mw-headline" id="Event_Handler_Methods">Event Handler Methods</span></h3>
+<dl><dt><code>host.registerHandler('EventName', eventHandler[, alwaysCall])</code></dt>
+<dd>Registers a function to handle an event. If <code>alwaysCall</code> is not specified the handler will only be called when the game is in the "Playing" state--not in the "Pregame" and "Postgame" states. If you would like it to run in Pregame and Postgame as well, <code>alwaysCall</code> must be specified and evaluate as true (e.g. "1").</dd>
+<dt><code>host.registerGameStatusHandler(gameStatusEventHandler)</code></dt>
+<dd>Registers a function to handle a game status event.</dd>
+<dt><code>host.unregisterGameStatusHandler(gameStatusEventHandler)</code></dt>
+<dd>Unregisters a game status event-handling function.</dd></dl>
+<h3><span class="mw-headline" id="Trigger_Methods">Trigger Methods</span></h3>
+<dl><dt><code>host.trig_create(object, callback, objName, radius, unknownBool, data)</code></dt>
+<dt><code>host.trig_getObjects(trig_id)</code></dt>
+<dt><code>host.trig_destroyAll()</code></dt>
+<dt><code>host.trig_destroy(trig_id)</code></dt></dl>
+<h3><span class="mw-headline" id="Global_Stats_Methods">Global Stats Methods</span></h3>
+<dl><dt><code>host.pers_gamespyStatsNewGame()</code></dt>
+<dt><code>host.pers_gamespyStatsEndGame()</code></dt>
+<dt><code>host.pers_gamespyStatsSendSnapshotFinal(snapShot)</code></dt>
+<dt><code>host.pers_gamespyStatsSendSnapshotUpdate</code></dt>
+<dt><code>host.pers_getStatsKeyVal(key)</code></dt>
+<dt><code>host.pers_plrRequestAwards(playerIndex, unknown, unknown)</code></dt>
+<dt><code>host.pers_plrRequestStats(playerIndex, unknown, urlToStatType)</code></dt>
+<dd>Presumably returns the specified stat of the specified player.</dd>
+<dt><code>host.pers_plrRequestUnlocks(playerIndex, unknown)</code></dt>
+<dd>Presumably returns the specified player's unlocks.</dd>
+<dt><code>host.pers_plrSetUnlocks(playerIndex, unknown, unknown)</code></dt>
+<dt><code>host.pers_plrAwardMedal</code></dt></dl>
+<h3><span id="&quot;sh&quot;_Methods_(SwiffHost?)"></span><span class="mw-headline" id=".22sh.22_Methods_.28SwiffHost.3F.29">"sh" Methods (SwiffHost?)</span></h3>
+<dl><dt><code>host.sh_setEnableCommander(bool)</code></dt>
+<dd>Enables or disables the commander position.</dd></dl>
+<h3><span id="&quot;gl&quot;_Methods_(GameLogic?)"></span><span class="mw-headline" id=".22gl.22_Methods_.28GameLogic.3F.29">"gl" Methods (GameLogic?)</span></h3>
+<dl><dt><code>host.gl_sendEndOfRoundData(dataString)</code></dt>
+<dd>Presumably sends stats-related information to clients when a round ends.</dd></dl>
+<h3><span id="&quot;sgl&quot;_Methods_(ServerGameLogic?)"></span><span class="mw-headline" id=".22sgl.22_Methods_.28ServerGameLogic.3F.29">"sgl" Methods (ServerGameLogic?)</span></h3>
+<dl><dt><code>host.sgl_getSettingsBool</code></dt>
+<dt><code>host.sgl_sendTextMessage(playerId, 10, 1, message)</code></dt>
+<dd>Send a server message to one player. Working Status Unknown</dd>
+<dt><code>host.sgl_sendRankEvent(playerIndex, rank, score)</code></dt>
+<dt><code>host.sgl_sendMedalEvent(playerIndex, type, value)</code></dt>
+<dt><code>host.sgl_sendPythonEvent</code></dt>
+<dt><code>host.sgl_sendGameLogicEvent(playerID, event, data)</code></dt>
+<dt><code>host.sgl_sendHudEvent(playerID, event, data)</code></dt>
+<dt><code>host.sgl_getIsAIGame()</code></dt>
+<dd>Presumably returns whether or not the current game has AI.</dd>
+<dt><code>host.sgl_getControlPointsInGroup</code></dt>
+<dt><code>host.sgl_endGame(winner, victoryType)</code></dt>
+<dd>Presumably ends a current game, awarding victory of victoryType to winner.</dd>
+<dt><code>host.sgl_getParam(name, unknown, unknown)</code></dt>
+<dt><code>host.sgl_setParam(name, unknown, unknown, unknown)</code></dt>
+<dt><code>host.sgl_getWorldSize()</code></dt>
+<dd>returns a tuple giving the north/south and east/west dimensions of the current map, more-or-less in meters.</dd>
+<dt><code>host.sgl_getMapName()</code></dt>
+<dd>Returns the current map name.</dd>
+<dt><code>host.sgl_getModDirectory()</code></dt>
+<dd>Returns the directory containing the currently active mod.</dd></dl>
+<h3><span id="&quot;ss&quot;_Methods_(Server_Settings?)"></span><span class="mw-headline" id=".22ss.22_Methods_.28Server_Settings.3F.29">"ss" Methods (Server Settings?)</span></h3>
+<dl><dt><code>host.ss_getParam(parameter)</code></dt>
+<dd>Returns value of specified setting.</dd>
+<dd>Settings include:
+<dl><dd>ticketRatio</dd>
+<dd>teamRatioPct</dd>
+<dd>maxPlayers</dd>
+<dd>gameMode</dd>
+<dd>mapName</dd>
+<dd>timeLimit</dd>
+<dd>scoreLimit</dd>
+<dd>autoBalance</dd>
+<dd>tkpEnabled</dd>
+<dd>tkpNeeded</dd>
+<dd>tkpDefault</dd>
+<dd>globRank</dd>
+<dd>globUnlocks</dd></dl></dd></dl>
+<dl><dd>You cannot find out server name, port and other similar information this way. Instead, use f.e. host.rcon_invoke('sv.serverName') to get the server name.</dd></dl>
+<h3><span class="mw-headline" id="Object_Manager_Methods">Object Manager Methods</span></h3>
+<dl><dt><code>host.omgr_getObjectsOfTemplate(template)</code></dt>
+<dt><code>host.omgr_getObjectsOfType(type)</code></dt></dl>
+<h3><span class="mw-headline" id="Timer_Methods">Timer Methods</span></h3>
+<dl><dt><code>host.timer_created(timer)</code></dt>
+<dt><code>host.timer_getTimers</code> - Do not use, unfinished DICE code</dt>
+<dd>Creates a Tuple and only fills one slot. Trying to access the other slots will crash the server.</dd>
+<dt><code>host.timer_destroy(timer)</code></dt>
+<dt><code>host.timer_getWallTime()</code></dt>
+<dd>Return the number of seconds since server started; see <a href="/index.php/BF2_Time" title="BF2 Time">BF2 Time</a></dd></dl>
+<h3><span class="mw-headline" id="Player_Manager_Methods">Player Manager Methods</span></h3>
+<dl><dt><code>host.pmgr_enableScoreEvents</code></dt>
+<dt><code>host.pmgr_getScore(playerIndex, name)</code></dt>
+<dd>Gets value of score name of specified player.</dd>
+<dt><code>host.pmgr_setScore(playerIndex, name, value)</code></dt>
+<dd>Sets value of score name of specified player.</dd>
+<dt><code>host.pmgr_p_get(name, playerIndex)</code></dt>
+<dt><code>host.pmgr_p_set(name, playerIndex, value)</code></dt>
+<dt><code>host.pmgr_isIndexValid(index)</code></dt>
+<dd>Checks the validity of specified player index.</dd>
+<dt><code>host.pmgr_getCommander()</code></dt>
+<dd>Presumably returns Player object for the current commander.</dd>
+<dt><code>host.pmgr_getPlayers()</code></dt>
+<dd>Returns current player objects.</dd>
+<dt><code>host.pmgr_getNumberOfPlayers()</code></dt>
+<dd>Returns number of players.</dd></dl>
+<h3><span class="mw-headline" id="RCon_Methods">RCon Methods</span></h3>
+<dl><dt><code>host.rcon_invoke(command)</code></dt>
+<dd>Executes a server console command.</dd>
+<dt><code>host.rcon_feedback(playerid, message)</code></dt>
+<dd>Send a message to an in-game player RCon client.</dd></dl>
+<p><a href="/index.php/BF2_Commands" class="mw-redirect" title="BF2 Commands">List of available host.rcon_invoke commands</a>
+</p>
+<h3><span class="mw-headline" id="Logging_Methods">Logging Methods</span></h3>
+<dl><dt><code>host.log(message)</code></dt>
+<dd>Send a message to the log.</dd></dl>
+<h2><span class="mw-headline" id="PhysicalObject">PhysicalObject</span></h2>
+<p>PhysicalObjects represent physical things in the BF2 game world; as such, they have the properties of real objects in the physical world: properties like position (X, Y, Z coordinates) and orientation (rotation), and can contain, and be contained by, other PhysicalObjects.  PhysicalObjects appear to be implemented as C++ objects in the game engine which the embedded Python engine has access to, but since they are game engine objects, they are not defined anywhere in Python, and cannot be created directly in Python--but they can be accessed from Python. No special imports are necessary to manipulate these objects.
+</p><p>Please note that since these are not native Python objects, we don't know what they are actually named inside the game engine; "PhysicalObject", as well as the names of other types of objects that inherit from that class, are made up for convienience. We also can't see into the game engine code to see if the hierarchial structure of these classes is what is presented here--for example, VehicleObject and SoldierObject may, in fact, be a single class; the hierarchy of PhysicalObject's decendents given here should nevertheless be equivalent to whatever the real hierarchy is.
+</p><p>PhysicalObject is a base class whose methods and attributes are inherited by several sub-classes.
+</p>
+<h3><span class="mw-headline" id="Methods_for_instances_of_PhysicalObject">Methods for instances of PhysicalObject</span></h3>
+<dl><dt><code>physicalObject.isValid()</code></dt>
+<dt><code>physicalObject.getTemplateProperty()</code></dt>
+<dt><code>physicalObject.getPosition()</code></dt>
+<dt><code>physicalObject.setPosition( (X, Y, Z) )</code></dt>
+<dt><code>physicalObject.getRotation()</code></dt>
+<dt><code>physicalObject.setRotation( (A, B, C) )</code></dt>
+<dt><code>physicalObject.getParent()</code></dt>
+<dd>Returns PhysicalObject that contains this instance, if any</dd>
+<dt><code>physicalObject.getChildren()</code></dt>
+<dd>Returns a tuple of PhysicalObjects contained by this instance</dd></dl>
+<p>For information about the coordinate system used by the Position and Rotation methods, see the page on <a href="/index.php/BF2_Coordinates" title="BF2 Coordinates">BF2 Coordinates</a>.
+</p><p>The known properties available via the getTemplateProperty method are:
+</p>
+<dl><dt><code>radius</code></dt>
+<dd>(For control points only.)</dd>
+<dt><code>ControlPointID</code></dt>
+<dd>(For control points only.)</dd></dl>
+<h3><span class="mw-headline" id="Attributes_for_instances_of_PhysicalObject">Attributes for instances of PhysicalObject</span></h3>
+<dl><dt><code>physicalObject.templateName</code></dt>
+<dt><code>physicalObject.isControlPoint</code></dt>
+<dt><code>physicalObject.isPlayerControlObject</code></dt>
+<dt><code>physicalObject.hasArmor</code></dt>
+<dt><code>physicalObject.token</code></dt></dl>
+<h3><span class="mw-headline" id="WeaponObject">WeaponObject</span></h3>
+<p>A WeaponObject is used to represent a weapon in BF2.  The WeaponObject class inherits the methods and attributes of PhysicalObject, with no additonal methods or attributes.
+</p>
+<h3><span class="mw-headline" id="KitObject">KitObject</span></h3>
+<p>A KitObject is used to represent a "kit" in BF2.  The KitObject class inherits the methods and attributes of PhysicalObject, with no additonal methods or attributes.
+</p>
+<h3><span class="mw-headline" id="ControlPointObject">ControlPointObject</span></h3>
+<p>A ControlPointObject is used to represent a control point in BF2.  The ControlPointObject class inherits the methods and attributes of PhysicalObject, with the following additional methods and attributes:
+</p>
+<h4><span class="mw-headline" id="Additional_Methods">Additional Methods</span></h4>
+<dl><dt><code>ControlPointObject.cp_getParam('parameter')</code></dt>
+<dt><code>ControlPointObject.cp_setParam('parameter', value)</code></dt></dl>
+<h4><span class="mw-headline" id="Additional_Attributes">Additional Attributes</span></h4>
+<dl><dt><code>ControlPointObject.flagPosition</code></dt>
+<dd>Returns 0=top, 1=middle, 2=bottom</dd>
+<dt><code>ControlPointObject.lastAttackingTeam</code></dt>
+<dt><code>ControlPointObject.triggerId</code></dt></dl>
+<h4><span class="mw-headline" id="Internal_Properties">Internal Properties</span></h4>
+<p>ControlPointObjects also have a number of internal properties that are accessed through the <code>cp_getParam</code> and <code>cp_setParam</code> methods:
+</p>
+<dl><dt><code>isHemisphere</code></dt>
+<dd>0 or 1, indicating if the control point capture area is a hemisphere or not.</dd>
+<dt><code>team</code></dt>
+<dd>Team the capture point belongs to: 0 for neutral, 1 for team 1, and 2 for team 2. Updating this value also changes the minimap and flag tag indicator.</dd>
+<dt><code>flag</code></dt>
+<dd>The flag image used in the control point; 1 for team 1's flag, 2 for team 2's.</dd>
+<dt><code>areaValue</code></dt>
+<dd>The weighting value for this control point</dd>
+<dt><code>unableToChangeTeam</code></dt>
+<dd>Whether or not this control point is capturable (0) or not (1)</dd>
+<dt><code>timeToGetControl</code></dt>
+<dd>How many seconds it takes to get control of this control point</dd>
+<dt><code>timeToLoseControl</code></dt>
+<dd>How many seconds it takes to get control of this control point</dd>
+<dt><code>onlyTakeableByTeam</code></dt>
+<dd>Whether (1) or not (0) this control point is only capturable by one team</dd>
+<dt><code>takeOverChangePerSecond</code></dt>
+<dd>Capture speed; speed at which the flag at this control point raises or lowers.</dd>
+<dt><code>enemyTicketLossWhenCaptured</code></dt>
+<dd>Ticket loss caused to the enemy when this control point is captured <i>(needs to be verified)</i></dd>
+<dt><code>playerId</code></dt>
+<dd><i>Unknown; may set the playerID of the player that captured this control point first (the first player to arrive, not assisting players?)</i></dd></dl>
+<h3><span class="mw-headline" id="VehicleObject">VehicleObject</span></h3>
+<p>A VehicleObject represents a BF2 vehicle.  The VehicleObject class inherits the methods and attributes of PhysicalObject, with several additional methods.  SoldierObject, used to represent the physical body of player, is a sub-class of VehicleObject.
+</p>
+<h4><span class="mw-headline" id="Additional_Methods_2">Additional Methods</span></h4>
+<dl><dt><code>vehicleObject.getDamage()</code></dt>
+<dt><code>vehicleObject.setDamage(intValue)</code></dt>
+<dt><code>vehicleObject.getIsWreck()</code></dt>
+<dd>Returns boolean, 1 if the vehicle is destroyed</dd>
+<dt><code>vehicleObject.getOccupyingPlayers()</code></dt>
+<dd>Returns an array with index 0 being the driver</dd>
+<dt><code>vehicleObject.getIsRemoteControlled()</code></dt></dl>
+<p>The getDamage() and setDamage() methods actually read/set the health of the vehicle. Transport helicopters start with 1500, tanks with 1000 and light jeeps with 750. They all explode when the damage reaches 0.
+</p>
+<h3><span class="mw-headline" id="SoldierObject">SoldierObject</span></h3>
+<p>A SoldierObject represents the physical body of a human or AI player in BF2. The SoldierObject class inherits the methods and attributes of VehicleObject, with no additonal methods or attributes. (Note: it appears that within the game engine, SoldierObject and VehicleObject may actually be the exact same thing; conceptually, though, it helps to think of SoldierObject as a subclass of VehicleObject).
+</p><p>It is important to pay attention to the destinction between a player's "physical" body in the game, which is represented by an instance of the SoldierObject class, having position, orientation, health, etc., and the in-game "spirit" of that player, which is represented by an instance of the bf2.PlayerManager.Player class, having properties like a name, squad, profile ID, etc.  The bf2.PlayerManager.Player ("spirit") is created when a player connects to the server, and persists as long as the server continues running, even across game rounds (and disconnect/reconnects--if the player disconnects and then reconnects, the server tries to match them up with an existing bf2.PlayerManager.Player object).  By contrast, a player remains associated with a SoldierObject only as long as they remain alive; as soon as they die, their association with the SoldierObject is broken; when they respawn, a new SoldierObject instance is created, and becomes associated with the player.  That is to say, between dying and respawning, the player's "spirit" leaves their first "body" and is "reincarnated" in a new "body".  Is that metaphysical enough for you?
+</p>
+<h2><span class="mw-headline" id="bf2.GameStatus">bf2.GameStatus</span></h2>
+<p>Just used as a container for the constant values returned by callbacks from the <code>GameStatusChanged</code> event:
+</p>
+<dl><dt><code>bf2.GameStatus.Playing</code></dt>
+<dt><code>bf2.GameStatus.EndGame</code></dt>
+<dt><code>bf2.GameStatus.PreGame</code></dt>
+<dt><code>bf2.GameStatus.Paused</code></dt>
+<dt><code>bf2.GameStatus.RestartServer</code></dt>
+<dt><code>bf2.GameStatus.NotConnected</code></dt></dl>
+<p>You must <code>import bf2</code> to access these class attributes.
+</p>
+<h2><span class="mw-headline" id="bf2.GameLogic.GameLogic">bf2.GameLogic.GameLogic</span></h2>
+<p>A wrapper around lots of BF2 engine stuff accessible through host, apparently to make it more Pythonic. During its initialization the bf2 class instantiates this class as the singleton object <code>bf2.gameLogic</code>.
+</p><p>You must <code>import bf2</code> to access the methods and attributes of this object.
+</p>
+<h3><span class="mw-headline" id="Methods_for_the_singleton_object">Methods for the singleton object</span></h3>
+<dl><dt><code>bf2.gameLogic.getModDir()</code></dt>
+<dt><code>bf2.gameLogic.getMapName()</code></dt>
+<dt><code>bf2.gameLogic.getWorldSize()</code></dt>
+<dd>returns a tuple giving the north/south and east/west dimensions of the current map, more-or-less in meters.</dd>
+<dt><code>bf2.gameLogic.getTeamName(team)</code></dt>
+<dt><code>bf2.gameLogic.isAIGame()</code></dt>
+<dt><code>bf2.gameLogic.sendClientCommand(playerId, command, args)</code></dt>
+<dd>Appears to tell game engine to prompt a player for input; the player's response returns control to Python by generating a <a href="/index.php/Event_Reference#Command_Events" title="Event Reference">ClientCommand</a> event; command is typically a numeric value, args can be anything, but is typically a tuple or list.</dd>
+<dt><code>bf2.gameLogic.sendGameEvent(playerObject, event, data)</code></dt>
+<dd>Tells the BF2 game engine to cause a <a href="/index.php/GameEvent" title="GameEvent">GameEvent</a> to occur.</dd>
+<dt><code>bf2.gameLogic.sendMedalEvent(playerObject, type, value)</code></dt>
+<dt><code>bf2.gameLogic.sendRankEvent(playerObject, rank, score)</code></dt>
+<dt><code>bf2.gameLogic.sendHudEvent(playerObject, event, data)</code></dt>
+<dd>Tells the BF2 game engine to cause a <a href="/index.php/HudEvent" title="HudEvent">HudEvent</a> to occur.</dd>
+<dt><code>bf2.gameLogic.sendServerMessage(playerId, message)</code></dt>
+<dt><code>bf2.gameLogic.getTicketState(team)</code></dt>
+<dt><code>bf2.gameLogic.setTicketState(team, value)</code></dt>
+<dt><code>bf2.gameLogic.getTickets(team)</code></dt>
+<dt><code>bf2.gameLogic.setTickets(team, value)</code></dt>
+<dt><code>bf2.gameLogic.getDefaultTickets(team)</code></dt>
+<dt><code>bf2.gameLogic.getTicketChangePerSecond(team)</code></dt>
+<dt><code>bf2.gameLogic.setTicketChangePerSecond(team, value)</code></dt>
+<dt><code>bf2.gameLogic.getTicketLimit(team, id)</code></dt>
+<dt><code>bf2.gameLogic.setTicketLimit(team, id, value)</code></dt>
+<dt><code>bf2.gameLogic.getDefaultTicketLossPerMin(team)</code></dt>
+<dt><code>bf2.gameLogic.getDefaultTicketLossAtEndPerMin()</code></dt>
+<dt><code>bf2.gameLogic.getWinner()</code></dt>
+<dt><code>bf2.gameLogic.getVictoryType()</code></dt>
+<dt><code>bf2.gameLogic.setHealPointLimit(value)</code></dt>
+<dd>Percentage heal required to trigger a <a href="/index.php/Event_Reference#Player_Events" title="Event Reference">PlayerHealPoint</a> event.</dd>
+<dt><code>bf2.gameLogic.setRepairPointLimit(value)</code></dt>
+<dd>Percentage heal required to trigger a <a href="/index.php/Event_Reference#Player_Events" title="Event Reference">PlayerRepairPoint</a> event.</dd>
+<dt><code>bf2.gameLogic.setGiveAmmoPointLimit(value)</code></dt>
+<dd>Percentage heal required to trigger a <a href="/index.php/Event_Reference#Player_Events" title="Event Reference">PlayerGiveAmmoPoint</a> event.</dd>
+<dt><code>bf2.gameLogic.setTeamDamagePointLimit(value)</code></dt>
+<dd>Percentage heal required to trigger a <a href="/index.php/Event_Reference#Player_Events" title="Event Reference">PlayerTeamDamagePoint</a> event.</dd>
+<dt><code>bf2.gameLogic.setTeamVehicleDamagePointLimit(value)</code></dt></dl>
+<h2><span class="mw-headline" id="bf2.GameLogic.ServerSettings">bf2.GameLogic.ServerSettings</span></h2>
+<p>Another wrapper around more BF2 engine stuff that's accessible through host; this class makes it accessing these things cleaner and more Pythonic. During its initialization the bf2 class instantiates this class as the singleton object bf2.serverSettings.
+</p><p>You must <code>import bf2</code> to access the methods and attributes of this object.
+</p>
+<h3><span class="mw-headline" id="Methods_for_the_singleton_object_2">Methods for the singleton object</span></h3>
+<dl><dt><code>bf2.serverSettings.getTicketRatio()</code></dt>
+<dt><code>bf2.serverSettings.getTeamRatioPercent()</code></dt>
+<dt><code>bf2.serverSettings.getMaxPlayers()</code></dt>
+<dt><code>bf2.serverSettings.getGameMode()</code></dt>
+<dt><code>bf2.serverSettings.getMapName()</code></dt>
+<dt><code>bf2.serverSettings.getTimeLimit()</code></dt>
+<dt><code>bf2.serverSettings.getScoreLimit()</code></dt>
+<dt><code>bf2.serverSettings.getAutoBalanceTeam()</code></dt>
+<dt><code>bf2.serverSettings.getTKPunishEnabled()</code></dt>
+<dt><code>bf2.serverSettings.getTKNumPunishToKick()</code></dt>
+<dt><code>bf2.serverSettings.getTKPunishByDefault()</code></dt>
+<dt><code>bf2.serverSettings.getUseGlobalRank()</code></dt>
+<dt><code>bf2.serverSettings.getUseGlobalUnlocks()</code></dt></dl>
+<p>You cannot find out server name, port and other similar information this way. Instead, use f.e. host.rcon_invoke('sv.serverName') to get the server name.
+</p>
+<h2><span class="mw-headline" id="bf2.ObjectManager.ObjectManager">bf2.ObjectManager.ObjectManager</span></h2>
+<p>During its initialization the bf2 class instantiates this class as the singleton object bf2.objectManager. This object can be used by Python to get access to internal game engine C++ objects. A list of the available object types can be found <a href="/index.php/Game_Engine_Object_Types" title="Game Engine Object Types">here</a>, and a list of available object templates can be found <a href="/index.php?title=Game_Engine_Object_Templates&amp;action=edit&amp;redlink=1" class="new" title="Game Engine Object Templates (page does not exist)">here</a>.
+</p><p>You must <code>import bf2</code> to access the methods and attributes of this object.
+</p>
+<h3><span class="mw-headline" id="Methods_for_the_singleton_object_3">Methods for the singleton object</span></h3>
+<dl><dt><code>bf2.objectManager.getObjectsOfType('object type')</code></dt>
+<dt><code>bf2.objectManager.getObjectsOfTemplate('object template')</code></dt></dl>
+<p><br />
+</p>
+<h2><span class="mw-headline" id="bf2.PlayerManager.PlayerScore">bf2.PlayerManager.PlayerScore</span></h2>
+<p>Objects of this class maintain a long list of player score attributes.  They are used inside of objects of the Player class; for any Player object x, <code>x.score</code> is an object of class PlayerScore.
+</p><p>You will not normally create objects of this class; they are created automatically as part of the Player class when Player objects are created. No special imports are necessary to access methods and attributes of these objects.
+</p><p>There is also a separate <code>player.stats</code> object, which tracks different information. You can use the following code fragment to see all of the variables in the <code>player.stats</code> object.
+</p><p><code>
+for s in vars(player.stats):
+	print str(s)
+</code>
+</p>
+<h3><span class="mw-headline" id="Class_methods">Class methods</span></h3>
+<dl><dt><code>reset()</code></dt>
+<dd>resets all score attributes stored within the object itself.</dd></dl>
+<h3><span class="mw-headline" id="Class_attributes_stored_in_the_PlayerScore_object">Class attributes stored in the PlayerScore object</span></h3>
+<dl><dt><code>index</code></dt>
+<dt><code>heals</code></dt>
+<dt><code>ammos</code></dt>
+<dt><code>repairs</code></dt>
+<dt><code>damageAssists</code></dt>
+<dt><code>passengerAssists</code></dt>
+<dt><code>driverAssists</code></dt>
+<dt><code>targetAssists</code></dt>
+<dt><code>driverSpecials</code></dt>
+<dt><code>revives</code></dt>
+<dt><code>teamDamages</code></dt>
+<dt><code>teamVehicleDamages</code></dt>
+<dt><code>cpCaptures</code></dt>
+<dt><code>cpDefends</code></dt>
+<dt><code>cpAssists</code></dt>
+<dt><code>suicides</code></dt>
+<dt><code>cpNeutralizes</code></dt>
+<dt><code>cpNeutralizeAssists</code></dt>
+<dt><code>rplScore</code></dt>
+<dd>This attribute may not be in all versions of BF2</dd>
+<dt><code>skillScore</code></dt>
+<dt><code>cmdScore</code></dt></dl>
+<h3><span class="mw-headline" id="Class_attributes_stored_in_the_BF2_engine">Class attributes stored in the BF2 engine</span></h3>
+<dl><dt><code>deaths</code></dt>
+<dt><code>kills</code></dt>
+<dt><code>TKs</code></dt>
+<dt><code>score</code></dt>
+<dt><code>skillScore</code></dt>
+<dt><code>rplScore</code></dt>
+<dt><code>cmdScore</code></dt>
+<dt><code>fracScore</code></dt>
+<dt><code>rank</code></dt>
+<dt><code>firstPlace</code></dt>
+<dt><code>secondPlace</code></dt>
+<dt><code>thirdPlace</code></dt>
+<dt><code>bulletsFired</code></dt>
+<dd>gives a tuple, each element of which is a 2-tuple consisting of the name of a weapon the player has fired, and the number of shots they fired from that weapon. As the player uses more weapons, more of the 2-tuples are added to the list. An example tuple returned:</dd>
+<dd><code>(("uspi-m16", 30), ("knife", 3))</code></dd>
+<dd>Before the first weapon is fired, this may be <code>None</code> or an empty tuple. The first weapon fired will not always be the first 2-tuple on the list returned.</dd>
+<dt><code>bulletsGivingDamage</code></dt>
+<dd>Same as above, but only with bullets giving damage</dd>
+<dt><code>bulletsFiredAndClear</code></dt>
+<dd>The "AndClear" resets the engine counter. polling this will only give new bullets. However having more than one module polling them is not a good idea.</dd>
+<dt><code>bulletsGivingDamageAndClear</code></dt></dl>
+<h3><span class="mw-headline" id="Class_attributes_computed_from_other_attribute_values">Class attributes computed from other attribute values</span></h3>
+<dl><dt><code>dkRatio</code></dt></dl>
+<h2><span class="mw-headline" id="bf2.PlayerManager.Player">bf2.PlayerManager.Player</span></h2>
+<p>An object of this class is created for each player in the game. When they are initialized, Player objects automatically instantiate a PlayerScore object and assign it to their score attribute.
+</p><p>You must <code>import bf2.PlayerManager</code> if you wish to create objects of this class; normally, however, you will just access methods and attributes of already existing Player objects that are returned to you by other calls, which requires no special import statement.
+</p>
+<h3><span class="mw-headline" id="Instances_created_with">Instances created with</span></h3>
+<pre> x = bf2.PlayerManager.Player(index)
+</pre>
+<h3><span class="mw-headline" id="Class_Attributes">Class Attributes</span></h3>
+<dl><dt><code>index</code></dt>
+<dd>playerID for this player</dd>
+<dt><code>score</code></dt>
+<dd>current score for this player</dd></dl>
+<h3><span class="mw-headline" id="Methods">Methods</span></h3>
+<dl><dt><code>isValid()</code></dt>
+<dt><code>isRemote()</code></dt>
+<dt><code>isAIPlayer()</code></dt>
+<dt><code>isAlive()</code></dt>
+<dt><code>isManDown()</code></dt>
+<dt><code>isConnected()</code></dt>
+<dt><code>getProfileId()</code></dt>
+<dt><code>isFlagHolder()</code></dt>
+<dt><code>getTeam()</code></dt>
+<dt><code>setTeam(t)</code></dt>
+<dt><code>getPing()</code></dt>
+<dd>Returns the player's ping (network transit time from player to server and back) in milliseconds</dd>
+<dt><code>getSuicide()</code></dt>
+<dd>Returns 1 if the player suicided. Resets once the player spawns.</dd>
+<dt><code>setSuicide(t)</code></dt>
+<dt><code>getTimeToSpawn()</code></dt>
+<dd>Returns 0 when a player is spawned in; when a player is waiting to spawn, it returns the number of seconds until they are allowed to spawn.</dd>
+<dt><code>setTimeToSpawn(t)</code></dt>
+<dd>Appears to generate an exception if used on a player that is already spawned in; if used on a player that that is waiting to spawn it changes the time until they are allowed to spawn.</dd>
+<dt><code>getSquadId()</code></dt>
+<dd>Returns the player's squad ID. Squads for each team are independently numbered beginning at "1" and increasing thereafter. Players not on a squad, including team commanders, are assigned to squad "0".</dd>
+<dt><code>isSquadLeader()</code></dt>
+<dd>Returns 1 if player is a squad leader.</dd>
+<dt><code>isCommander()</code></dt>
+<dd>Returns 1 if player is currently the commander.</dd>
+<dt><code>getName()</code></dt>
+<dd>Return's player's name</dd>
+<dt><code>setName(name)</code></dt>
+<dd>Sets a player's name (at least, it changes what getName() returns), but the change doesn't show up in-game--everything in the game still shows the player's old name. (it is working,but only sees that player who connected after the name change.)</dd>
+<dt><code>getSpawnGroup()</code></dt>
+<dt><code>setSpawnGroup(t)</code></dt>
+<dt><code>getKit()</code></dt>
+<dd>Returns the current player's kit object.</dd>
+<dt><code>getVehicle()</code></dt>
+<dd>Returns the current player's vehicle object. If the player is not in a vehicle at the time this returns the player's soldier object.</dd>
+<dt><code>getDefaultVehicle()</code></dt>
+<dd>Returns the player's soldier object, no matter what vehicle they are in.</dd>
+<dt><code>getPrimaryWeapon()</code></dt>
+<dd>Returns the weapon object for the player's currently selected weapon.</dd>
+<dt><code>getAddress()</code></dt>
+<dd>Returns player's IP address</dd>
+<dt><code>setIsInsideCP(val)</code></dt>
+<dt><code>getIsInsideCP()</code></dt></dl>
+<h2><span class="mw-headline" id="bf2.PlayerManager.PlayerManager">bf2.PlayerManager.PlayerManager</span></h2>
+<p>This class is a wraper around some player management functions in the BF2 engine, and also adds some simple calculations and logic to those functions. During its initialization the bf2 class instantiates this class as the singleton object bf2.playerManager.
+</p><p>You must <code>import bf2</code> to access the methods and attributes of this object.
+</p>
+<h3><span class="mw-headline" id="Methods_for_the_singleton_object_4">Methods for the singleton object</span></h3>
+<dl><dt><code>bf2.playerManager.getNumberOfPlayers()</code></dt>
+<dt><code>bf2.playerManager.getCommander(team)</code></dt>
+<dt><code>bf2.playerManager.getPlayers()</code></dt>
+<dt><code>bf2.playerManager.getPlayerByIndex(index)</code></dt>
+<dt><code>bf2.playerManager.getNextPlayer(index)</code></dt>
+<dt><code>bf2.playerManager.getNumberOfPlayersInTeam(team)</code></dt>
+<dt><code>bf2.playerManager.getNumberOfAlivePlayersInTeam(team)</code></dt>
+<dt><code>bf2.playerManager.enableScoreEvents()</code></dt>
+<dd>Enables PlayerScore events</dd>
+<dt><code>bf2.playerManager.disableScoreEvents()</code></dt>
+<dd>Disables PlayerScore events</dd></dl>
+<p><br />
+</p>
+<h2><span class="mw-headline" id="bf2.Timer">bf2.Timer</span></h2>
+<p>(Not available in PR, use the realitytimer below.)
+</p><p>Objects in this class are timers that can cause <a href="/index.php/Event_Reference#Timer_Events" title="Event Reference">timer events</a> to be generated when a fixed amount of time has elapsed.  Instances are created with
+</p>
+<pre> timer = bf2.Timer(timerEventHandler, delta, alwaysTrigger, data)
+</pre>
+<p><code>timerEventHandler</code> is the handler to be called when <code>delta</code> seconds have elapsed since the creation of the timer; <code>alwaysTrigger</code> should be <code>1</code> <i>(not sure what the alternative is).</i> <code>data</code> is an optional item (typically a tuple) that will be passed to <code>timerEventHandler</code>. (Note that even though <code>data</code> is optional when establishing a timer, the timerEventHandler must specify it as a parameter, or the handler won't work).
+</p><p>A timer may fire only once per tick. Setting a very low interval time will assure the timer fires every tick. Setting 0 disables it.
+</p><p>You must <code>import bf2.Timer</code> to create timer objects.
+</p>
+<h3><span class="mw-headline" id="Class_Methods_2">Class Methods</span></h3>
+<dl><dt><code>destroy()</code></dt>
+<dd>Destroys the associated game engine timer (but not the Python instance.)</dd>
+<dt><code>getTime()</code></dt>
+<dd>Returns the <a href="/index.php/BF2_Time" title="BF2 Time">wall time</a> at which this timer will fire.</dd>
+<dt><code>setTime(time)</code></dt>
+<dd>Changes the <a href="/index.php/BF2_Time" title="BF2 Time">wall time</a> at which this timer will fire.</dd>
+<dt><code>setRecurring(interval)</code></dt>
+<dd>Specifies this this timer should fire repeatedly, every interval seconds.</dd>
+<dt><code>onTrigger()</code></dt>
+<dd>For internal use only; calls <code>timerEventHandler</code>.</dd></dl>
+<p><br />
+</p><p><br />
+</p>
+<h3><span class="mw-headline" id="Project_Reality_Timer_interface">Project Reality Timer interface</span></h3>
+<p>Project Reality timer (realitytimer.py) expands the default interface and adds:
+</p><p>-Exception catching with a debug message when an exception is not caught in the handler, No need to worry about bad code crashing the server.
+</p><p>-Internal check to make sure timers don't fire after destroy() was called (Can happen when Destroy() is called on the same tick)
+</p><p>-realitytimer.fireOnce(targetFunc, delay, data=None) class that can fire an event once after delay and then destroy itself (No need to store reference)
+</p><p>-realitytimer.fireNextTick(targetFunc, data=None) class that will fire the event at the next game tick and then destroy itself (Also no need to store)
+</p>
+<h2><span class="mw-headline" id="bf2.TriggerManager.TriggerManager">bf2.TriggerManager.TriggerManager</span></h2>
+<p>This class is a wraper around some player management functions in the BF2 engine. During its initialization the bf2 class instantiates this class as the singleton object bf2.triggerManager. This object is used to manage "triggers", which are events that are fired when a PCO enters a defined spherical or hemispherical volume surrounding an object.
+</p><p>You must <code>import bf2</code> to access the methods and attributes of this object.
+</p>
+<h3><span class="mw-headline" id="Methods_for_the_singleton_object_5">Methods for the singleton object</span></h3>
+<dl><dt><code>bf2.triggerManager.createRadiusTrigger(object, callback, objName, radius, data=None)</code></dt>
+<dd>Creates a trigger that causes <code>callback</code> to be called if a player enters a spherical region of radius <code>radius</code> centered on <code>object</code>, passing <code>data</code> as an argument.</dd>
+<dt><code>bf2.triggerManager.createHemiSphericalTrigger(object, callback, objName, radius, data=None)</code></dt>
+<dd>Same as <code>bf2.triggerManager.createRadiusTrigger</code>, except that instead of a spherical trigger region, the trigger region is a flat circle lying along the ground (yes, it's badly named).</dd>
+<dt><code>bf2.triggerManager.destroyAllTriggers()</code></dt>
+<dd>Destroys all registered triggers.</dd>
+<dt><code>bf2.triggerManager.destroy(trig_id)</code></dt>
+<dd>Destroys a specific trigger.</dd>
+<dt><code>getObjects(trig_id)</code></dt>
+<dd>Returns a tuple containing all objects currently within the specified trigger region.</dd></dl>
+<h2><span class="mw-headline" id="bf2.stats.constants">bf2.stats.constants</span></h2>
+<p>This module appears intended to be imported with something like
+</p>
+<pre> from bf2.stats.constants import *
+</pre>
+<p>so that everything in it is loaded into the local namespace, rather than being a part of any object. The module includes a lot of constants and dictionaries, as well as some utility functions.
+</p>
+<h3><span class="mw-headline" id="Functions">Functions</span></h3>
+<dl><dt><code>getVehicleType(templateName)</code></dt>
+<dt><code>getWeaponType(templateName)</code></dt>
+<dt><code>getKitType(templateName)</code></dt>
+<dt><code>getArmy(templateName)</code></dt>
+<dt><code>getMapId(mapName)</code></dt>
+<dt><code>getGameModeId(gameMode)</code></dt>
+<dt><code>getRootParent(physicalObject)</code></dt>
+<dd>Traverses the containment for physicalObject all the way to the top; returns the outermost (topmost?) containing object.</dd></dl>
+<p>For example, <code>getWeaponType("usrif_m16a2")</code> looks up an M16 rifle in a dictionary called <code>weaponTypeMap</code> (also defined in bf2.stats.constants) and returns the constant <code>WEAPON_TYPE_ASSAULT</code>. . . which, too, is defined in bf2.stats.constants, as having a numeric value of "0". A list of template names used in some of these functions can be found in the <a href="/index.php?title=Game_Engine_Object_Templates&amp;action=edit&amp;redlink=1" class="new" title="Game Engine Object Templates (page does not exist)">Game Engine Object Templates</a> page.
+</p><p>These constant values appear to be the same as those used in the <a href="/index.php?title=BF2Stats&amp;action=edit&amp;redlink=1" class="new" title="BF2Stats (page does not exist)">statistics server</a>, specifically the <a href="/index.php?title=BF2Stats_LookUp_Values&amp;action=edit&amp;redlink=1" class="new" title="BF2Stats LookUp Values (page does not exist)">look up values</a>.
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20210817184200
+Cache expiry: 86400
+Dynamic content: false
+Complications: []
+CPU time usage: 0.055 seconds
+Real time usage: 0.055 seconds
+Preprocessor visited node count: 165/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key wiki_bf2:pcache:idhash:5-0!canonical and timestamp 20210817184200 and revision id 34
+ -->
+</div></div><div class="printfooter">Retrieved from "<a dir="ltr" href="https://bf2tech.uturista.pt/index.php?title=Object_Reference&amp;oldid=34">https://bf2tech.uturista.pt/index.php?title=Object_Reference&amp;oldid=34</a>"</div>
+		<div id="catlinks" class="catlinks catlinks-allhidden" data-mw="interface"></div>
+	</div>
+</div>
+
+<div id="mw-navigation">
+	<h2>Navigation menu</h2>
+	<div id="mw-head">
+		<!-- Please do not use role attribute as CSS selector, it is deprecated. -->
+<nav id="p-personal" class="vector-menu" aria-labelledby="p-personal-label" role="navigation" 
+	 >
+	<h3 id="p-personal-label">
+		<span>Personal tools</span>
+	</h3>
+	<!-- Please do not use the .body class, it is deprecated. -->
+	<div class="body vector-menu-content">
+		<!-- Please do not use the .menu class, it is deprecated. -->
+		<ul class="vector-menu-content-list"><li id="pt-login"><a href="/index.php?title=Special:UserLogin&amp;returnto=Object+Reference" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li><li id="pt-createaccount"><a href="/index.php/Special:RequestAccount" title="You are encouraged to create an account and log in; however, it is not mandatory">Request account</a></li></ul>
+		
+	</div>
+</nav>
+
+
+		<div id="left-navigation">
+			<!-- Please do not use role attribute as CSS selector, it is deprecated. -->
+<nav id="p-namespaces" class="vector-menu vector-menu-tabs vectorTabs" aria-labelledby="p-namespaces-label" role="navigation" 
+	 >
+	<h3 id="p-namespaces-label">
+		<span>Namespaces</span>
+	</h3>
+	<!-- Please do not use the .body class, it is deprecated. -->
+	<div class="body vector-menu-content">
+		<!-- Please do not use the .menu class, it is deprecated. -->
+		<ul class="vector-menu-content-list"><li id="ca-nstab-main" class="selected"><a href="/index.php/Object_Reference" title="View the content page [c]" accesskey="c">Page</a></li><li id="ca-talk" class="new"><a href="/index.php?title=Talk:Object_Reference&amp;action=edit&amp;redlink=1" rel="discussion" title="Discussion about the content page (page does not exist) [t]" accesskey="t">Discussion</a></li></ul>
+		
+	</div>
+</nav>
+
+
+			<!-- Please do not use role attribute as CSS selector, it is deprecated. -->
+<nav id="p-variants" class="vector-menu-empty emptyPortlet vector-menu vector-menu-dropdown vectorMenu" aria-labelledby="p-variants-label" role="navigation" 
+	 >
+	<input type="checkbox" class="vector-menu-checkbox vectorMenuCheckbox" aria-labelledby="p-variants-label" />
+	<h3 id="p-variants-label">
+		<span>Variants</span>
+	</h3>
+	<!-- Please do not use the .body class, it is deprecated. -->
+	<div class="body vector-menu-content">
+		<!-- Please do not use the .menu class, it is deprecated. -->
+		<ul class="menu vector-menu-content-list"></ul>
+		
+	</div>
+</nav>
+
+
+		</div>
+		<div id="right-navigation">
+			<!-- Please do not use role attribute as CSS selector, it is deprecated. -->
+<nav id="p-views" class="vector-menu vector-menu-tabs vectorTabs" aria-labelledby="p-views-label" role="navigation" 
+	 >
+	<h3 id="p-views-label">
+		<span>Views</span>
+	</h3>
+	<!-- Please do not use the .body class, it is deprecated. -->
+	<div class="body vector-menu-content">
+		<!-- Please do not use the .menu class, it is deprecated. -->
+		<ul class="vector-menu-content-list"><li id="ca-view" class="collapsible selected"><a href="/index.php/Object_Reference">Read</a></li><li id="ca-viewsource" class="collapsible"><a href="/index.php?title=Object_Reference&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e">View source</a></li><li id="ca-history" class="collapsible"><a href="/index.php?title=Object_Reference&amp;action=history" title="Past revisions of this page [h]" accesskey="h">View history</a></li></ul>
+		
+	</div>
+</nav>
+
+
+			<!-- Please do not use role attribute as CSS selector, it is deprecated. -->
+<nav id="p-cactions" class="vector-menu-empty emptyPortlet vector-menu vector-menu-dropdown vectorMenu" aria-labelledby="p-cactions-label" role="navigation" 
+	 >
+	<input type="checkbox" class="vector-menu-checkbox vectorMenuCheckbox" aria-labelledby="p-cactions-label" />
+	<h3 id="p-cactions-label">
+		<span>More</span>
+	</h3>
+	<!-- Please do not use the .body class, it is deprecated. -->
+	<div class="body vector-menu-content">
+		<!-- Please do not use the .menu class, it is deprecated. -->
+		<ul class="menu vector-menu-content-list"></ul>
+		
+	</div>
+</nav>
+
+
+			<div id="p-search" role="search">
+	<h3 >
+		<label for="searchInput">Search</label>
+	</h3>
+	<form action="/index.php" id="searchform">
+		<div id="simpleSearch">
+			<input type="search" name="search" placeholder="Search BF2 Technical Information Wiki" title="Search BF2 Technical Information Wiki [f]" accesskey="f" id="searchInput"/>
+			<input type="hidden" name="title" value="Special:Search">
+			<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton mw-fallbackSearchButton"/>
+			<input type="submit" name="go" value="Go" title="Go to a page with this exact name if it exists" id="searchButton" class="searchButton"/>
+		</div>
+	</form>
+</div>
+
+		</div>
+	</div>
+	
+<div id="mw-panel">
+	<div id="p-logo" role="banner">
+		<a  title="Visit the main page" class="mw-wiki-logo" href="/index.php/Main_Page"></a>
+	</div>
+	<!-- Please do not use role attribute as CSS selector, it is deprecated. -->
+<nav id="p-navigation" class="vector-menu vector-menu-portal portal portal-first" aria-labelledby="p-navigation-label" role="navigation" 
+	 >
+	<h3 id="p-navigation-label">
+		<span>Navigation</span>
+	</h3>
+	<!-- Please do not use the .body class, it is deprecated. -->
+	<div class="body vector-menu-content">
+		<!-- Please do not use the .menu class, it is deprecated. -->
+		<ul class="vector-menu-content-list"><li id="n-mainpage-description"><a href="/index.php/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li><li id="n-recentchanges"><a href="/index.php/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li><li id="n-randompage"><a href="/index.php/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li><li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li></ul>
+		
+	</div>
+</nav>
+
+
+	<!-- Please do not use role attribute as CSS selector, it is deprecated. -->
+<nav id="p-Project Reality" class="vector-menu vector-menu-portal portal" aria-labelledby="p-Project Reality-label" role="navigation" 
+	 >
+	<h3 id="p-Project Reality-label">
+		<span>Project Reality</span>
+	</h3>
+	<!-- Please do not use the .body class, it is deprecated. -->
+	<div class="body vector-menu-content">
+		<!-- Please do not use the .menu class, it is deprecated. -->
+		<ul class="vector-menu-content-list"><li id="n-Forums"><a href="http://realitymod.com/forum/" rel="nofollow">Forums</a></li><li id="n-GitHub"><a href="https://github.com/realitymod" rel="nofollow">GitHub</a></li><li id="n-IRC"><a href="http://www.realitymod.com/irc/" rel="nofollow">IRC</a></li></ul>
+		
+	</div>
+</nav>
+
+<!-- Please do not use role attribute as CSS selector, it is deprecated. -->
+<nav id="p-tb" class="vector-menu vector-menu-portal portal" aria-labelledby="p-tb-label" role="navigation" 
+	 >
+	<h3 id="p-tb-label">
+		<span>Tools</span>
+	</h3>
+	<!-- Please do not use the .body class, it is deprecated. -->
+	<div class="body vector-menu-content">
+		<!-- Please do not use the .menu class, it is deprecated. -->
+		<ul class="vector-menu-content-list"><li id="t-whatlinkshere"><a href="/index.php/Special:WhatLinksHere/Object_Reference" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li><li id="t-recentchangeslinked"><a href="/index.php/Special:RecentChangesLinked/Object_Reference" rel="nofollow" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li><li id="t-specialpages"><a href="/index.php/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li><li id="t-print"><a href="javascript:print();" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li><li id="t-permalink"><a href="/index.php?title=Object_Reference&amp;oldid=34" title="Permanent link to this revision of the page">Permanent link</a></li><li id="t-info"><a href="/index.php?title=Object_Reference&amp;action=info" title="More information about this page">Page information</a></li></ul>
+		
+	</div>
+</nav>
+
+
+	
+</div>
+
+</div>
+
+<footer id="footer" class="mw-footer" role="contentinfo" >
+	<ul id="footer-info" >
+		<li id="footer-info-lastmod"> This page was last edited on 27 December 2017, at 22:04.</li>
+	</ul>
+	<ul id="footer-places" >
+		<li id="footer-places-privacy"><a href="/index.php/BF2_Technical_Information_Wiki:Privacy_policy" title="BF2 Technical Information Wiki:Privacy policy">Privacy policy</a></li>
+		<li id="footer-places-about"><a href="/index.php/BF2_Technical_Information_Wiki:About" title="BF2 Technical Information Wiki:About">About BF2 Technical Information Wiki</a></li>
+		<li id="footer-places-disclaimer"><a href="/index.php/BF2_Technical_Information_Wiki:General_disclaimer" title="BF2 Technical Information Wiki:General disclaimer">Disclaimers</a></li>
+	</ul>
+	<ul id="footer-icons" class="noprint">
+		<li id="footer-poweredbyico"><a href="https://www.mediawiki.org/"><img src="/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" srcset="/resources/assets/poweredby_mediawiki_132x47.png 1.5x, /resources/assets/poweredby_mediawiki_176x62.png 2x" width="88" height="31" loading="lazy"/></a></li>
+	</ul>
+	<div style="clear: both;"></div>
+</footer>
+
+
+
+<script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgPageParseReport":{"limitreport":{"cputime":"0.055","walltime":"0.055","ppvisitednodes":{"value":165,"limit":1000000},"postexpandincludesize":{"value":0,"limit":2097152},"templateargumentsize":{"value":0,"limit":2097152},"expansiondepth":{"value":2,"limit":40},"expensivefunctioncount":{"value":0,"limit":100},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":0,"limit":5000000},"timingprofile":["100.00%    0.000      1 -total"]},"cachereport":{"timestamp":"20210817184200","ttl":86400,"transientcontent":false}}});mw.config.set({"wgBackendResponseTime":122});});</script></body></html>
+

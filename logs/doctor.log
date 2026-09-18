@@ -1,0 +1,111 @@
+============================================================
+doctor v3: standard_admin import STARTED  (os module not used)
+  python      : 2.3.4 (#0, May 26 2005, 13:27:22) [MSC v.1310 32 bit (Intel)]
+  platform    : win32
+  __file__    : admin\standard_admin\zzdoctor.py
+  dir guess   : 'admin\\standard_admin'
+  os members  : __all__, __builtins__, __doc__, __file__, __loader__, __name__, _get_exports_list, _names, sys
+  --- compile pre-flight ---
+    checking admin\standard_admin\spawn.py
+      spawn.py : SYNTAX OK (53596 bytes)
+    checking admin\standard_admin\autobalance.py
+      autobalance.py : *** SYNTAX ERROR ***
+  !!       compile autobalance.py EXCEPTION: exceptions.SyntaxError: invalid syntax (autobalance.py, line 2)
+Traceback (most recent call last):
+  File "admin\standard_admin\zzdoctor.py", line 139, in ?
+    checking admin\standard_admin\tk_punish.py
+      tk_punish.py : *** SYNTAX ERROR ***
+  !!       compile tk_punish.py EXCEPTION: exceptions.SyntaxError: invalid syntax (tk_punish.py, line 2)
+Traceback (most recent call last):
+  File "admin\standard_admin\zzdoctor.py", line 139, in ?
+    checking admin\standard_admin\playerconnect.py
+      playerconnect.py : *** SYNTAX ERROR ***
+  !!       compile playerconnect.py EXCEPTION: exceptions.SyntaxError: invalid syntax (playerconnect.py, line 6)
+Traceback (most recent call last):
+  File "admin\standard_admin\zzdoctor.py", line 139, in ?
+    checking admin\standard_admin\zzdoctor.py
+      zzdoctor.py : SYNTAX OK (5117 bytes)
+  --- engine imports ---
+    import bf2 : OK
+    import host : OK
+    import default : OK
+    import new : OK
+doctor v3: standard_admin import FINISHED
+============================================================
+__init__: import spawn OK
+__init__: spawn.init() OK
+doctor: init() called  <-- standard_admin package fully loaded
+============================================================
+doctor v3: standard_admin import STARTED  (os module not used)
+  python      : 2.3.4 (#0, May 26 2005, 13:27:22) [MSC v.1310 32 bit (Intel)]
+  platform    : win32
+  __file__    : admin\standard_admin\zzdoctor.py
+  dir guess   : 'admin\\standard_admin'
+  os members  : __all__, __builtins__, __doc__, __file__, __loader__, __name__, _get_exports_list, _names, sys
+  --- compile pre-flight ---
+    checking admin\standard_admin\spawn.py
+      spawn.py : SYNTAX OK (53596 bytes)
+    checking admin\standard_admin\autobalance.py
+      autobalance.py : *** SYNTAX ERROR ***
+  !!       compile autobalance.py EXCEPTION: exceptions.SyntaxError: invalid syntax (autobalance.py, line 2)
+Traceback (most recent call last):
+  File "admin\standard_admin\zzdoctor.py", line 139, in ?
+    checking admin\standard_admin\tk_punish.py
+      tk_punish.py : *** SYNTAX ERROR ***
+  !!       compile tk_punish.py EXCEPTION: exceptions.SyntaxError: invalid syntax (tk_punish.py, line 2)
+Traceback (most recent call last):
+  File "admin\standard_admin\zzdoctor.py", line 139, in ?
+    checking admin\standard_admin\playerconnect.py
+      playerconnect.py : *** SYNTAX ERROR ***
+  !!       compile playerconnect.py EXCEPTION: exceptions.SyntaxError: invalid syntax (playerconnect.py, line 6)
+Traceback (most recent call last):
+  File "admin\standard_admin\zzdoctor.py", line 139, in ?
+    checking admin\standard_admin\zzdoctor.py
+      zzdoctor.py : SYNTAX OK (5117 bytes)
+  --- engine imports ---
+    import bf2 : OK
+    import host : OK
+    import default : OK
+    import new : OK
+doctor v3: standard_admin import FINISHED
+============================================================
+__init__: import spawn OK
+__init__: spawn.init() OK
+doctor: init() called  <-- standard_admin package fully loaded
+============================================================
+doctor v3: standard_admin import STARTED  (os module not used)
+  python      : 2.3.4 (#0, May 26 2005, 13:27:22) [MSC v.1310 32 bit (Intel)]
+  platform    : win32
+  __file__    : admin\standard_admin\zzdoctor.py
+  dir guess   : 'admin\\standard_admin'
+  os members  : __all__, __builtins__, __doc__, __file__, __loader__, __name__, _get_exports_list, _names, sys
+  --- compile pre-flight ---
+    checking admin\standard_admin\spawn.py
+      spawn.py : SYNTAX OK (53596 bytes)
+    checking admin\standard_admin\autobalance.py
+      autobalance.py : *** SYNTAX ERROR ***
+  !!       compile autobalance.py EXCEPTION: exceptions.SyntaxError: invalid syntax (autobalance.py, line 2)
+Traceback (most recent call last):
+  File "admin\standard_admin\zzdoctor.py", line 139, in ?
+    checking admin\standard_admin\tk_punish.py
+      tk_punish.py : *** SYNTAX ERROR ***
+  !!       compile tk_punish.py EXCEPTION: exceptions.SyntaxError: invalid syntax (tk_punish.py, line 2)
+Traceback (most recent call last):
+  File "admin\standard_admin\zzdoctor.py", line 139, in ?
+    checking admin\standard_admin\playerconnect.py
+      playerconnect.py : *** SYNTAX ERROR ***
+  !!       compile playerconnect.py EXCEPTION: exceptions.SyntaxError: invalid syntax (playerconnect.py, line 6)
+Traceback (most recent call last):
+  File "admin\standard_admin\zzdoctor.py", line 139, in ?
+    checking admin\standard_admin\zzdoctor.py
+      zzdoctor.py : SYNTAX OK (5117 bytes)
+  --- engine imports ---
+    import bf2 : OK
+    import host : OK
+    import default : OK
+    import new : OK
+doctor v3: standard_admin import FINISHED
+============================================================
+__init__: import spawn OK
+__init__: spawn.init() OK
+doctor: init() called  <-- standard_admin package fully loaded
